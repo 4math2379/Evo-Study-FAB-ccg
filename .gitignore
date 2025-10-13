@@ -1,0 +1,5 @@
+.venv/*
+*.sh
+evos/*.sh
+evos/Biomancy evo/*.sh
+evos/Quantuum Evo/*.sh
