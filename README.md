@@ -80,7 +80,7 @@ tekloStudy/
 
 <div align="center">
 
-<img src="evos/Quantuum Evo/evo_quantum_nexusv1.png" alt="Quantum Nexus" width="440"/> <img src="evos/Quantuum Evo/evo_study. 2025, 23_09_33.png" alt="Quantum processor" width="400"/>
+<img src="evos/Quantuum Evo/evo_study. 2025, 23_23_19.png" alt="Quantum Nexus" width="400"/> <img src="evos/Quantuum Evo/evo_study. 2025, 23_09_33.png" alt="Quantum processor" width="400"/>
 
 *Quantum Evo to put on base Evo Steel Soul Evos*
 
