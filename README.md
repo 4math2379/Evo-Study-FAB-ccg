@@ -4,12 +4,40 @@
 
 This repository contains the development and design documentation for **Teklovossen**, a Mechanologist hero for the Flesh and Blood trading card game's Modular Ascension set. The project focuses on creating thematic Evo equipment, AI items, and supporting cards that showcase Teklo Energy manipulation, nanotechnology, and artificial intelligence integration.
 
+> **NOTES**
+**This is a fan-made project and is not affiliated with Legend Story Studios or the official Flesh and Blood game.**
+
+<div align="center">
+
+
+<img src="evos/evo_study. 2025, 22_22_28.png" alt="Custom Fabrication" width="400"/>
+
+*Teklo Custom Fabrication - A key resource for Mechanologist strategies*
+
+</div>
+
+## Why ?
+As fresh new player of **Flesh and Blood**, i was looking for a hero that can fit my playstyle. And as a lover of technology and futurism, Teklovossen was a perfect match.
+Maybe because i am a programmer, or because i love Sci-Fi movies, but i was really attracted by the idea of playing a hero that can manipulate technology and use it to his advantage.
+
+But after playing a few games with him, i realize that his card pool was really limited, and that he was not really *competitive*.
+
+A friend of me , knowed  as "If i have a Blue I Win" told me on day:
+**"Why not create aditional cards for Teklovossen ? and see if can be more competitive ?"**
+
+I was thinking about it for a while, and finaly i decide to do it.
+
+So Thank You **Laurent** !
+
+
+
 ##  Project Goals
 
 - Design balanced and thematic Evo equipment sets for multiple tech paths
 - Create comprehensive card evaluation and balance testing systems
 - Develop lore-consistent mechanics that fit the Flesh and Blood game system
-- Generate visual concepts and art direction for card designs
+- Generate visual concepts and art direction for card designs (Using AI tools)
+- Create an expansion of Teklovossen's playstyle options
 
 ## 📁 File Structure
 
@@ -47,6 +75,16 @@ tekloStudy/
 - **Focus**: Probabilistic control and multidimensional precision
 - **Key Cards**: `Evo Quantum Processor`, `Quantum Nexus`  
 - **Mechanics**: Quantum charge manipulation, probability effects, reality bending
+
+
+
+<div align="center">
+
+<img src="evos/Quantuum Evo/evo_quantum_nexusv1.png" alt="Quantum Nexus" width="440"/> <img src="evos/Quantuum Evo/evo_study. 2025, 23_09_33.png" alt="Quantum processor" width="400"/>
+
+*Quantum Evo to put on base Evo Steel Soul Evos*
+
+</div>
 
 ##  Development Tools
 
@@ -117,8 +155,8 @@ jupyter notebook teklostudyv1.ipynb
 ## Gameplay Integration
 <div align="center">
 
-### **Resource Tokens**
-<img src="evos/evo_study.%202025,%2022_24_33.png" alt="Teklo Memory" width="200"/> <img src="evos/evo_study.%202025,%2022_24_31.png" alt="Teklo Energy" width="200"/>
+### **Resource Tokens of the Modular Ascension Fan made expansion**
+<img src="evos/evo_study.%202025,%2022_24_33.png" alt="Teklo Memory" width="400"/> <img src="evos/evo_study.%202025,%2022_24_31.png" alt="Teklo Energy" width="400"/>
 
 *Teklo Memory & Teklo Energy - Core resources for Mechanologist gameplay*
 
@@ -150,7 +188,7 @@ jupyter notebook teklostudyv1.ipynb
 - **Timing Restrictions**: Reaction costs or conditional triggers
 - **Resource Pressure**: Decay mechanics or maintenance costs
 
-## 🔄 Development Workflow
+##  Development Workflow
 
 1. **Design Phase**: Create thematic mechanics in `teklostudy.md`
 2. **Analysis Phase**: Score cards using the balance evaluator
@@ -158,7 +196,9 @@ jupyter notebook teklostudyv1.ipynb
 4. **Testing Phase**: Theoretical gameplay analysis
 5. **Visual Phase**: Generate concept art for approved designs
 
-## 📝 Contributing
+##  Contributing
+
+You are welcome to contribute ideas, card designs, or balance suggestions. Please follow the development workflow and ensure all new cards are documented and evaluated.
 
 When adding new cards or themes:
 
@@ -168,14 +208,14 @@ When adding new cards or themes:
 4. **Theme Consistency**: Ensure 9+ theme fit score
 5. **Update Documentation**: Include mechanical rationale
 
-## 🎯 Future Development
+##  Future Development
 
 ### **Planned Features**
 - Interactive card database with search functionality
-- Automated balance recommendations
+- Automated balance recommendations ( But live testing are still needed )
 - Meta-game impact simulation
 - Comprehensive playtest framework
-- Art generation pipeline integration
+
 
 ### **Additional Themes**
 - **Corporate Succession**: Executive equipment line
@@ -190,3 +230,5 @@ When adding new cards or themes:
 **License**: Personal Project - Educational Use
 
 For questions about specific cards or balance concerns, reference the detailed analysis in `teklostudyv1.ipynb` or the complete card documentation in `teklostudy.md`.
+Feel free to open issues or pull requests for contributions!
+Contact: support@fabtcgcompanion.com
