@@ -3,4 +3,37 @@
 evos/*.sh
 evos/Biomancy evo/*.sh
 evos/Quantuum Evo/*.sh
+
+# AWS and ML credentials
+.aws/
+config/aws_credentials.json
+config/secrets.json
+*.pem
+*.key
+
+# Data Science artifacts
+data/raw/*
+data/processed/*
+data/simulations/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/simulations/.gitkeep
+
+# ML Models
+models/balance/*.pkl
+models/balance/*.joblib
+models/strategy/*.pkl
+models/strategy/*.joblib
+*.model
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Logs and temporary files
+logs/
+*.log
+.DS_Store
+Thumbs.db
 WARP.md
