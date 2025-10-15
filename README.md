@@ -17,15 +17,15 @@ This repository contains the development and design documentation for **Teklovos
 </div>
 
 ## Why ?
-As fresh new player of **Flesh and Blood**, i was looking for a hero that can fit my playstyle. And as a lover of technology and futurism, Teklovossen was a perfect match.
-Maybe because i am a programmer, or because i love Sci-Fi movies, but i was really attracted by the idea of playing a hero that can manipulate technology and use it to his advantage.
+As a fresh new player of **Flesh and Blood**, I was looking for a hero that can fit my playstyle. And as a lover of technology and futurism, Teklovossen was a perfect match.
+Maybe because I am a programmer, or because I love Sci-Fi movies, but I was really attracted by the idea of playing a hero that can manipulate technology and use it to his advantage.
 
-But after playing a few games with him, i realize that his card pool was really limited, and that he was not really *competitive*.
+But after playing a few games with him, I realize that his card pool was really limited, and that he was not really *competitive*.
 
-A friend of me , knowed  as "If i have a Blue I Win" told me on day:
-**"Why not create aditional cards for Teklovossen ? and see if can be more competitive ?"**
+A friend of mine, known as "If I have a Blue I Win" told me one day:
+**"Why not create additional cards for Teklovossen? and see if can be more competitive?"**
 
-I was thinking about it for a while, and finaly i decide to do it.
+I was thinking about it for a while, and finally I decided to do it.
 
 So Thank You **Laurent** !
 
