@@ -69,8 +69,7 @@ class TekloSageMakerOrchestrator:
             return get_execution_role()
         except:
             # If running outside SageMaker, use IAM role ARN
-            return os.environ.get('SAGEMAKER_ROLE', 
-                'arn:aws:iam::744656158913:role/SageMakerExecutionRole')
+            return os.environ.get('SAGEMAKER_ROLE')
     
         # Update the prepare_training_data method around line 80
     
@@ -195,7 +194,7 @@ class TekloSageMakerOrchestrator:
             print(f"Error making prediction: {e}")
             # Return reasonable fallback predictions
             return [5.0] * len(input_data)
-            
+
     def output_fn(prediction, content_type):
         """Format output"""
         try:
