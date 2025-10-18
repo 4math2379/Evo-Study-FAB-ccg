@@ -10,7 +10,7 @@ This repository contains the development and design documentation for **Teklovos
 <div align="center">
 
 
-<img src="evos/evo_study. 2025, 22_22_28.png" alt="Custom Fabrication" width="400"/>
+<img src="evos/Nano Evos/evo_study. 2025, 22_22_28.png" alt="Custom Fabrication" width="400"/>
 
 *Teklo Custom Fabrication - A key resource for Mechanologist strategies*
 
