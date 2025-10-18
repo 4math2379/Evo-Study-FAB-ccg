@@ -25,7 +25,7 @@ models/balance/*.joblib
 models/strategy/*.pkl
 models/strategy/*.joblib
 *.model
-
+config/
 # Jupyter notebook checkpoints
 .ipynb_checkpoints/
 __pycache__/
