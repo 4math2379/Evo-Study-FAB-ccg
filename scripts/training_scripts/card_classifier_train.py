@@ -7,6 +7,7 @@ import os
 import sys
 import logging
 import json
+import pickle
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

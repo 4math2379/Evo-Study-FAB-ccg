@@ -6,7 +6,8 @@ import numpy as np
 import os
 import sys
 import logging
-import glob
+import json
+import pickle
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler
@@ -16,57 +17,163 @@ from sklearn.metrics import mean_squared_error, r2_score
 # Setup comprehensive logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
 def model_fn(model_dir):
-    """Load model from the model directory"""
+    """Load model from the model directory - FIXED VERSION"""
     try:
-        model_path = os.path.join(model_dir, 'model.pkl')
-        with open(model_path, 'rb') as f:
-            model = pickle.load(f)
+        print(f"Loading model from directory: {model_dir}")
+
+        # Check all files in model directory
+        if os.path.exists(model_dir):
+            files = os.listdir(model_dir)
+            print(f"Files in model directory: {files}")
+        else:
+            print(f"Model directory does not exist: {model_dir}")
+            raise FileNotFoundError(f"Model directory not found: {model_dir}")
+
+        # Try multiple possible model file names and formats
+        model_files = [
+            'model.joblib',
+            'model.pkl', 
+            'model.pickle',
+            'trained_model.joblib',
+            'trained_model.pkl'
+        ]
+
+        model = None
+        for model_file in model_files:
+            model_path = os.path.join(model_dir, model_file)
+            if os.path.exists(model_path):
+                print(f"Found model file: {model_path}")
+                try:
+                    if model_file.endswith('.joblib'):
+                        model = joblib.load(model_path)
+                        print(f"Successfully loaded model with joblib from {model_path}")
+                    else:
+                        with open(model_path, 'rb') as f:
+                            model = pickle.load(f)
+                        print(f"Successfully loaded model with pickle from {model_path}")
+                    break
+                except Exception as e:
+                    print(f"Failed to load {model_path}: {e}")
+                    continue
+
+        if model is None:
+            raise FileNotFoundError("No valid model file found in model directory")
+
+        # Verify the model is trained
+        if hasattr(model, 'named_steps'):
+            # It's a pipeline
+            rf_model = model.named_steps.get('model')
+            if rf_model and hasattr(rf_model, 'n_features_in_'):
+                print(f"Model is trained with {rf_model.n_features_in_} features")
+            else:
+                raise ValueError("Pipeline model is not properly trained")
+        elif hasattr(model, 'n_features_in_'):
+            print(f"Model is trained with {model.n_features_in_} features")
+        else:
+            raise ValueError("Model appears to be untrained (no n_features_in_ attribute)")
+
         return model
+
     except Exception as e:
-        print(f"Error loading model: {e}")
-        # Return dummy model as fallback
-        return RandomForestRegressor(n_estimators=10, random_state=42)
+        print(f"CRITICAL ERROR loading model: {e}")
+        print("This will cause prediction failures!")
+        # Instead of returning dummy model, raise the error
+        raise e
 
 def input_fn(request_body, request_content_type):
-    """Parse input data"""
+    """Parse input data - IMPROVED VERSION"""
     try:
+        print(f"Parsing input with content type: {request_content_type}")
+        print(f"Request body: {request_body}")
+
         if request_content_type == 'application/json':
             data = json.loads(request_body)
+            print(f"Parsed JSON data: {data}")
+
             if isinstance(data, dict) and 'instances' in data:
-                return np.array(data['instances'])
+                input_array = np.array(data['instances'])
+            elif isinstance(data, dict) and 'data' in data:
+                input_array = np.array([data['data']])
             elif isinstance(data, list):
-                return np.array([data] if isinstance(data[0], (int, float)) else data)
+                if len(data) > 0 and isinstance(data[0], (int, float)):
+                    # Single instance
+                    input_array = np.array([data])
+                else:
+                    # Multiple instances
+                    input_array = np.array(data)
             else:
-                return np.array([[0, 0, 0, 0, 0, 0, 0]])  # Default fallback
+                raise ValueError(f"Unexpected JSON format: {data}")
+
         elif request_content_type == 'text/csv':
-            return np.array([[float(x) for x in request_body.strip().split(',')]])
+            # Parse CSV input
+            lines = request_body.strip().split('\n')
+            data_rows = []
+            for line in lines:
+                if line.strip():
+                    row = [float(x.strip()) for x in line.split(',')]
+                    data_rows.append(row)
+            input_array = np.array(data_rows)
+
         else:
-            return np.array([[0, 0, 0, 0, 0, 0, 0]])  # Default fallback
+            raise ValueError(f"Unsupported content type: {request_content_type}")
+
+        print(f"Final input array shape: {input_array.shape}")
+        return input_array
+
     except Exception as e:
-        print(f"Error parsing input: {e}")
-        return np.array([[0, 0, 0, 0, 0, 0, 0]])  # Default fallback
+        print(f"ERROR parsing input: {e}")
+        print(f"Content type: {request_content_type}")
+        print(f"Request body: {request_body}")
+        raise e
 
 def predict_fn(input_data, model):
-    """Make predictions"""
+    """Make predictions - IMPROVED VERSION"""
     try:
+        print(f"Making prediction with input shape: {input_data.shape}")
+
+        # Verify model is trained
+        if hasattr(model, 'named_steps'):
+            rf_model = model.named_steps.get('model')
+            if rf_model and not hasattr(rf_model, 'n_features_in_'):
+                raise ValueError("Pipeline model is not trained")
+        elif not hasattr(model, 'n_features_in_'):
+            raise ValueError("Model is not trained")
+
         predictions = model.predict(input_data)
-        return predictions.tolist()
+        print(f"Raw predictions: {predictions}")
+
+        # Convert to list for JSON serialization
+        pred_list = predictions.tolist()
+        print(f"Converted predictions: {pred_list}")
+
+        return pred_list
+
     except Exception as e:
-        print(f"Error making prediction: {e}")
-        # Return reasonable fallback predictions
-        return [5.0] * len(input_data)
+        print(f"ERROR making prediction: {e}")
+        print(f"Model type: {type(model)}")
+        print(f"Input data shape: {input_data.shape}")
+        print(f"Model attributes: {dir(model)}")
+        raise e
 
 def output_fn(prediction, content_type):
-    """Format output"""
+    """Format output - IMPROVED VERSION"""
     try:
+        print(f"Formatting output: {prediction} with content type: {content_type}")
+
         if content_type == 'application/json':
-            return json.dumps({'predictions': prediction})
+            result = {'predictions': prediction}
+            output = json.dumps(result)
         else:
-            return str(prediction)
+            output = str(prediction)
+
+        print(f"Final output: {output}")
+        return output
+
     except Exception as e:
-        print(f"Error formatting output: {e}")
-        return json.dumps({'predictions': [5.0]})
+        print(f"ERROR formatting output: {e}")
+        raise e
 
 if __name__ == "__main__":
     print("=== SKLEARN TRAINING SCRIPT STARTED ===")
@@ -247,21 +354,31 @@ if __name__ == "__main__":
             pipeline = Pipeline([
                 ('scaler', StandardScaler()),
                 ('model', RandomForestRegressor(
-                    n_estimators=10,    # Reduced for speed with small dataset
-                    max_depth=3,        # Reduced for small dataset
+                    n_estimators=20,    # Increased slightly for better performance
+                    max_depth=5,        # Increased for better fit
                     random_state=42,
                     n_jobs=1            # Single job for stability
                 ))
             ])
 
             # Train the model
+            print("Fitting model...")
             pipeline.fit(X, y)
-            print("Model training completed")
+            print("Model training completed successfully!")
+
+            # Verify the model is trained
+            rf_model = pipeline.named_steps['model']
+            print(f"Model trained with {rf_model.n_features_in_} features")
+            print(f"Model has {rf_model.n_estimators} estimators")
 
             # Quick evaluation
             try:
                 train_score = pipeline.score(X, y)
                 print(f"Training R2 score: {train_score:.3f}")
+
+                # Test a prediction to make sure everything works
+                test_pred = pipeline.predict(X[:1])
+                print(f"Test prediction: {test_pred}")
 
                 # Simple cross-validation if we have enough data
                 if len(y) >= 4:  # Need at least 4 samples for 2-fold CV
@@ -279,22 +396,34 @@ if __name__ == "__main__":
             logger.error(error_msg)
             sys.exit(1)
 
-        # Save the model
+        # Save the model with BOTH formats for maximum compatibility
         try:
-            model_path = os.path.join(args.model_dir, "model.joblib")
-            joblib.dump(pipeline, model_path)
-            print(f"Model saved to: {model_path}")
+            # Primary save format: joblib
+            model_path_joblib = os.path.join(args.model_dir, "model.joblib")
+            joblib.dump(pipeline, model_path_joblib)
+            print(f"Model saved with joblib to: {model_path_joblib}")
 
-            # Verify the saved model
-            if os.path.exists(model_path):
-                saved_size = os.path.getsize(model_path)
-                print(f"Saved model size: {saved_size} bytes")
+            # Backup save format: pickle
+            model_path_pickle = os.path.join(args.model_dir, "model.pkl")
+            with open(model_path_pickle, 'wb') as f:
+                pickle.dump(pipeline, f)
+            print(f"Model saved with pickle to: {model_path_pickle}")
 
-                # Try to load it back to verify
-                test_model = joblib.load(model_path)
-                print("Model verification successful")
-            else:
-                raise FileNotFoundError("Model file was not created")
+            # Verify both saved models work
+            for path, loader in [(model_path_joblib, joblib.load), (model_path_pickle, lambda p: pickle.load(open(p, 'rb')))]:
+                if os.path.exists(path):
+                    saved_size = os.path.getsize(path)
+                    print(f"Saved model size ({os.path.basename(path)}): {saved_size} bytes")
+
+                    if saved_size > 0:
+                        # Try to load it back to verify
+                        test_model = loader(path)
+                        test_pred = test_model.predict(X[:1])
+                        print(f"Model verification successful for {os.path.basename(path)}: {test_pred}")
+                    else:
+                        print(f"WARNING: {os.path.basename(path)} is empty!")
+                else:
+                    print(f"ERROR: {os.path.basename(path)} was not created")
 
         except Exception as e:
             error_msg = f"Failed to save model: {e}"

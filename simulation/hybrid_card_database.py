@@ -58,6 +58,12 @@ def load_base_fab_cards(csv_path: str = "card.csv") -> Dict[str, Card]:
             # Exclude non-mechanologist Instant cards
             relevant_cards = [card for card in relevant_cards if 'Mechanologist' in card.get('Types', '')]
 
+        construct_cards = df[df['Types'].str.contains('Construct', na=False)]
+        if len(construct_cards) > 0:
+            relevant_cards.extend(construct_cards.to_dict('records'))
+            print(f"🏗️ Found {len(construct_cards)} Construct cards")
+            # Exclude non-mechanologist Construct cards
+            relevant_cards = [card for card in relevant_cards if 'Mechanologist' in card.get('Types', '')]
 
         # 3. Find basic equipment that could be base cards
         basic_equipment = df[
