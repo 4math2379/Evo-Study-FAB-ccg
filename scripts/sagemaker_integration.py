@@ -66,9 +66,20 @@ class TekloSageMakerOrchestrator:
             # If running outside SageMaker, use IAM role ARN
             return os.environ.get('SAGEMAKER_ROLE')
     
-    def prepare_training_data(self, data_path: str = "../data") -> Dict[str, str]:
-        """Prepare and upload training data to S3 with correct directory structure"""
-        analyzer = TekloDataAnalyzer(data_path)
+    def prepare_training_data(self, data_path: str = "../data", 
+                              card_csv_path: str = "../notebooks/card.csv",
+                              include_card_features: bool = True) -> Dict[str, str]:
+        """Prepare and upload training data to S3 with correct directory structure
+        
+        Args:
+            data_path: Path to simulation data directory
+            card_csv_path: Path to card.csv file with card features
+            include_card_features: Whether to include card features from card.csv
+        
+        Returns:
+            Dictionary mapping model names to S3 directory paths
+        """
+        analyzer = TekloDataAnalyzer(data_path, card_csv_path)
         
         # Load and prepare data for different model types
         try:
@@ -77,24 +88,36 @@ class TekloSageMakerOrchestrator:
         except:
             raise ValueError("No simulation data found. Run gameplay simulator first.")
         
+        print(f"\n{'='*80}")
+        print("PREPARING TRAINING DATA WITH CARD FEATURES")
+        print(f"{'='*80}")
+        print(f"Card feature extraction: {'ENABLED' if include_card_features else 'DISABLED'}")
+        print(f"Card database: {card_csv_path}")
+        
         # Export data for different models
         s3_paths = {}
         
         # 1. Balance Predictor (Win Rate Prediction)
-        balance_path = analyzer.export_for_sagemaker('avg_win_rate')
+        print(f"\n📊 Preparing Balance Predictor data...")
+        balance_path = analyzer.export_for_sagemaker('avg_win_rate', 
+                                                     include_card_features=include_card_features)
         s3_balance_dir = self._upload_to_s3(balance_path, 'balance_predictor/training_data.csv')
         s3_paths['balance_predictor'] = s3_balance_dir
         
         # 2. Balance Scorer (Expert Score Prediction) 
         if 'avg_expert_balance_score' in analyzer.ml_data.columns:
-            balance_scorer_path = analyzer.export_for_sagemaker('avg_expert_balance_score')
+            print(f"\n📊 Preparing Balance Scorer data...")
+            balance_scorer_path = analyzer.export_for_sagemaker('avg_expert_balance_score',
+                                                                include_card_features=include_card_features)
             s3_scorer_dir = self._upload_to_s3(balance_scorer_path, 'balance_scorer/training_data.csv')
             s3_paths['balance_scorer'] = s3_scorer_dir
         
-        print(f"\n📂 Training directories created in S3 bucket: {self.bucket}")
+        print(f"\n{'='*80}")
+        print("TRAINING DATA PREPARATION COMPLETE")
+        print(f"{'='*80}")
+        print(f"📂 S3 Bucket: {self.bucket}")
         for model, directory in s3_paths.items():
-            print(f"  {model}: {directory}")
-            print(f"    └── training_data.csv")
+            print(f"  ✓ {model}: {directory}")
         
         return s3_paths
     

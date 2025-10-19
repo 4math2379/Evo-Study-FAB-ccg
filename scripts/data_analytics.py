@@ -24,15 +24,25 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import mean_squared_error, r2_score
 
+# Local imports
+try:
+    from card_feature_extractor import CardFeatureExtractor
+except ImportError:
+    # For relative imports when used as module
+    from .card_feature_extractor import CardFeatureExtractor
+
 
 class TekloDataAnalyzer:
     """Comprehensive data analysis pipeline for Teklovossen simulations"""
     
-    def __init__(self, data_path: str = "../data"):
+    def __init__(self, data_path: str = "../data", card_csv_path: str = "../notebooks/card.csv"):
         self.data_path = Path(data_path)
         self.simulation_data: Optional[pd.DataFrame] = None
         self.ml_data: Optional[pd.DataFrame] = None
         self.card_performance_metrics: Dict[str, Any] = {}
+        
+        # Initialize card feature extractor
+        self.card_extractor = CardFeatureExtractor(card_csv_path)
         
         # Plotting configuration
         plt.style.use('seaborn-v0_8')
@@ -428,13 +438,106 @@ class TekloDataAnalyzer:
         """Describe cluster characteristics"""
         return {feature: cluster_data[feature].mean() for feature in features if feature in cluster_data.columns}
     
-    def export_for_sagemaker(self, target_column: str = 'avg_win_rate') -> str:
-        """Export processed data in format suitable for AWS SageMaker"""
+    def enrich_with_card_features(self, deck_cards_dict: Optional[Dict[str, List[str]]] = None) -> pd.DataFrame:
+        """Enrich ML data with card features from card.csv
+        
+        Args:
+            deck_cards_dict: Dictionary mapping deck names to list of card names.
+                           If None, will attempt to extract from ml_data.
+        
+        Returns:
+            DataFrame with enriched features
+        """
         if self.ml_data is None:
             self.load_ml_data()
         
+        print("\n=== Enriching Data with Card Features ===")
+        
+        # If deck_cards_dict not provided, create sample enrichment with aggregated stats
+        if deck_cards_dict is None:
+            print("No deck card lists provided. Adding aggregated card database statistics...")
+            
+            # Load card data if not already loaded
+            if self.card_extractor.card_data is None:
+                self.card_extractor.load_card_data()
+            
+            # Calculate global card statistics for Mechanologist cards
+            mech_cards = self.card_extractor.card_data[
+                self.card_extractor.card_data['Types'].str.contains('Mechanologist', na=False)
+            ]
+            
+            # Add global statistics as features
+            enriched_data = self.ml_data.copy()
+            
+            # Average stats for Mechanologist cards
+            enriched_data['mech_avg_pitch'] = mech_cards['Pitch'].mean()
+            enriched_data['mech_avg_cost'] = pd.to_numeric(mech_cards['Cost'], errors='coerce').mean()
+            enriched_data['mech_avg_power'] = pd.to_numeric(mech_cards['Power'], errors='coerce').mean()
+            enriched_data['mech_avg_defense'] = pd.to_numeric(mech_cards['Defense'], errors='coerce').mean()
+            
+            # Count of card types
+            enriched_data['mech_equipment_count'] = (mech_cards['Types'].str.contains('Equipment', na=False)).sum()
+            enriched_data['mech_action_count'] = (mech_cards['Types'].str.contains('Action', na=False)).sum()
+            enriched_data['mech_attack_count'] = (mech_cards['Types'].str.contains('Attack', na=False)).sum()
+            
+            # Count of common keywords
+            enriched_data['mech_boost_cards'] = (mech_cards['Card Keywords'].str.contains('Boost', na=False)).sum()
+            enriched_data['mech_go_again_cards'] = (mech_cards['Card Keywords'].str.contains('Go again', na=False)).sum()
+            
+            print(f"Added {len([c for c in enriched_data.columns if c.startswith('mech_')])} card feature columns")
+            
+        else:
+            # Use provided deck card lists to extract specific features
+            print(f"Processing {len(deck_cards_dict)} decks with specific card lists...")
+            
+            enriched_data = self.ml_data.copy()
+            
+            # Extract features for each deck
+            for deck_name, card_list in deck_cards_dict.items():
+                if deck_name not in enriched_data['deck_name'].values:
+                    continue
+                
+                # Get aggregated features for this deck
+                deck_features = self.card_extractor.aggregate_deck_features(card_list)
+                
+                # Add features to the row for this deck
+                for feature_name, feature_value in deck_features.items():
+                    enriched_data.loc[enriched_data['deck_name'] == deck_name, feature_name] = feature_value
+            
+            print(f"Added deck-specific card features")
+        
+        # Fill any NaN values with 0
+        enriched_data = enriched_data.fillna(0)
+        
+        print(f"Enriched dataset shape: {enriched_data.shape}")
+        print(f"Total features: {len(enriched_data.columns)}")
+        
+        return enriched_data
+    
+    def export_for_sagemaker(self, target_column: str = 'avg_win_rate', 
+                            include_card_features: bool = True,
+                            deck_cards_dict: Optional[Dict[str, List[str]]] = None) -> str:
+        """Export processed data in format suitable for AWS SageMaker
+        
+        Args:
+            target_column: The target variable to predict
+            include_card_features: Whether to include card features from card.csv
+            deck_cards_dict: Optional dictionary mapping deck names to card lists
+        
+        Returns:
+            Path to exported CSV file
+        """
+        if self.ml_data is None:
+            self.load_ml_data()
+        
+        # Enrich with card features if requested
+        if include_card_features:
+            ml_data_enriched = self.enrich_with_card_features(deck_cards_dict)
+        else:
+            ml_data_enriched = self.ml_data.copy()
+        
         # Prepare features for ML
-        feature_columns = [
+        base_feature_columns = [
             'AI', 'Nano', 'Quantum', 'Base',
             '0_cost', '1_cost', '2_cost', '3_cost', '4_plus_cost',
             'equipment', 'item', 'action',
@@ -443,10 +546,22 @@ class TekloDataAnalyzer:
             'consistency_score', 'avg_expert_balance_score'
         ]
         
-        available_features = [col for col in feature_columns if col in self.ml_data.columns]
+        # Add card features if they exist
+        card_feature_columns = [col for col in ml_data_enriched.columns 
+                               if col.startswith('mech_') or 
+                                  col.startswith('avg_') or 
+                                  col.startswith('max_') or 
+                                  col.startswith('count_')]
+        
+        # Combine all features
+        all_feature_columns = base_feature_columns + card_feature_columns
+        available_features = [col for col in all_feature_columns if col in ml_data_enriched.columns]
+        
+        # Remove duplicate columns
+        available_features = list(dict.fromkeys(available_features))
         
         # Create final dataset with target first (SageMaker convention)
-        ml_export = self.ml_data[[target_column] + available_features].copy()
+        ml_export = ml_data_enriched[[target_column] + available_features].copy()
         
         # Handle missing values
         ml_export = ml_export.fillna(ml_export.mean())
@@ -456,9 +571,12 @@ class TekloDataAnalyzer:
         export_path = self.data_path / "processed" / f"sagemaker_training_data_{timestamp}.csv"
         ml_export.to_csv(export_path, index=False, header=False)  # SageMaker expects no headers
         
-        print(f"SageMaker training data exported to: {export_path}")
-        print(f"Features: {available_features}")
+        print(f"\n=== SageMaker Export Complete ===")
+        print(f"Export path: {export_path}")
         print(f"Target: {target_column}")
+        print(f"Total features: {len(available_features)}")
+        print(f"  - Base features: {len([f for f in available_features if f in base_feature_columns])}")
+        print(f"  - Card features: {len([f for f in available_features if f not in base_feature_columns])}")
         print(f"Dataset shape: {ml_export.shape}")
         
         return str(export_path)
