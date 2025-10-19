@@ -7,8 +7,15 @@ import sys
 import os
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Constants for paths
+SCRIPT_DIR = Path(__file__).parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+CARD_CSV_PATH = PROJECT_ROOT / "notebooks" / "card.csv"
+DATA_DIR = PROJECT_ROOT / "data"
+TEMP_DATA_DIR = DATA_DIR / "processed"
+
+# Add script directory to path for imports
+sys.path.insert(0, str(SCRIPT_DIR))
 
 from card_feature_extractor import CardFeatureExtractor
 import pandas as pd
@@ -21,7 +28,7 @@ def test_feature_extraction():
     print("TEST 1: Card Feature Extraction")
     print("="*80)
     
-    extractor = CardFeatureExtractor("../notebooks/card.csv")
+    extractor = CardFeatureExtractor(str(CARD_CSV_PATH))
     
     # Test with Mechanologist cards
     test_cards = [
@@ -63,7 +70,7 @@ def test_deck_aggregation():
     print("TEST 2: Deck Feature Aggregation")
     print("="*80)
     
-    extractor = CardFeatureExtractor("../notebooks/card.csv")
+    extractor = CardFeatureExtractor(str(CARD_CSV_PATH))
     
     # Create a sample deck
     sample_deck = [
@@ -125,15 +132,14 @@ def test_data_enrichment():
         from data_analytics import TekloDataAnalyzer
         
         # Create temporary data directory
-        temp_dir = Path("../data/processed")
-        temp_dir.mkdir(parents=True, exist_ok=True)
+        TEMP_DATA_DIR.mkdir(parents=True, exist_ok=True)
         
         # Save sample data
-        temp_ml_path = temp_dir / "test_ml_data.csv"
+        temp_ml_path = TEMP_DATA_DIR / "test_ml_data.csv"
         sample_ml_data.to_csv(temp_ml_path, index=False)
         
         # Initialize analyzer
-        analyzer = TekloDataAnalyzer(data_path="../data", card_csv_path="../notebooks/card.csv")
+        analyzer = TekloDataAnalyzer(data_path=str(DATA_DIR), card_csv_path=str(CARD_CSV_PATH))
         analyzer.ml_data = sample_ml_data
         
         # Enrich with card features
@@ -159,10 +165,15 @@ def test_data_enrichment():
         
         return True
         
-    except Exception as e:
-        print(f"\n⚠️  Data enrichment test skipped: {e}")
-        print("   (This is expected if simulation data doesn't exist)")
+    except (ImportError, ModuleNotFoundError) as e:
+        print(f"\n⚠️  Data enrichment test skipped: Missing dependencies ({e})")
+        print("   (This is expected if matplotlib/seaborn not installed)")
         return True
+    except Exception as e:
+        print(f"\n❌ Unexpected error in data enrichment test: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 def test_export_format():
@@ -192,14 +203,13 @@ def test_export_format():
         })
         
         # Initialize analyzer
-        analyzer = TekloDataAnalyzer(data_path="../data", card_csv_path="../notebooks/card.csv")
+        analyzer = TekloDataAnalyzer(data_path=str(DATA_DIR), card_csv_path=str(CARD_CSV_PATH))
         analyzer.ml_data = sample_ml_data
         
         print(f"\n🔧 Testing SageMaker export format...")
         
         # Create temp directory
-        temp_dir = Path("../data/processed")
-        temp_dir.mkdir(parents=True, exist_ok=True)
+        TEMP_DATA_DIR.mkdir(parents=True, exist_ok=True)
         
         # Export with card features
         export_path = analyzer.export_for_sagemaker('avg_win_rate', include_card_features=True)
@@ -226,9 +236,17 @@ def test_export_format():
         
         return True
         
-    except Exception as e:
-        print(f"\n⚠️  SageMaker export test skipped: {e}")
+    except (ImportError, ModuleNotFoundError) as e:
+        print(f"\n⚠️  SageMaker export test skipped: Missing dependencies ({e})")
         return True
+    except (FileNotFoundError, IOError) as e:
+        print(f"\n⚠️  SageMaker export test skipped: File system error ({e})")
+        return True
+    except Exception as e:
+        print(f"\n❌ Unexpected error in SageMaker export test: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 def run_all_tests():
