@@ -88,6 +88,13 @@ tekloStudy/
 
 ##  Development Tools
 
+### **Card Feature Extraction System** 🆕
+The project now includes advanced card feature extraction from the official FAB card database:
+- **40+ features per card**: Numeric attributes, card types, keywords, and hero classes
+- **3,568 card database**: Complete official Flesh and Blood card collection
+- **ML Integration**: Seamlessly integrates with SageMaker training pipeline
+- **Documentation**: See [docs/CARD_FEATURES.md](docs/CARD_FEATURES.md) for details
+
 ### **Card Balance Evaluator**
 The project includes a comprehensive Python-based card evaluation system in `teklostudyv1.ipynb`:
 
