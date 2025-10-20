@@ -1,6 +1,10 @@
 """
 AWS SageMaker Integration for Teklovossen Card Balance Prediction
 ML model training, deployment, and inference pipeline
+
+Requires a .env file in the project root with:
+  SAGEMAKER_ROLE=arn:aws:iam::ACCOUNT:role/SageMakerExecutionRole
+  AWS_REGION=us-east-1 (optional)
 """
 
 import boto3
@@ -14,6 +18,10 @@ import time
 import pickle
 import os
 import textwrap
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # SageMaker imports
 import sagemaker
@@ -25,7 +33,14 @@ from sagemaker.inputs import TrainingInput
 from sagemaker.predictor import Predictor
 
 # Local imports
-from .data_analytics import TekloDataAnalyzer
+try:
+    from data_analytics import TekloDataAnalyzer
+except ImportError:
+    # Fallback for when running as a script
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from data_analytics import TekloDataAnalyzer
 
 
 class TekloSageMakerOrchestrator:
@@ -59,12 +74,23 @@ class TekloSageMakerOrchestrator:
         self.deployed_endpoints = {}
         
     def _get_execution_role(self) -> str:
-        """Get SageMaker execution role"""
+        """Get SageMaker execution role from environment or SageMaker context"""
         try:
+            # First try to get from environment variable (.env file)
+            role_arn = os.environ.get('SAGEMAKER_ROLE')
+            if role_arn:
+                print(f"Using SageMaker role from environment: {role_arn}")
+                return role_arn
+            
+            # Fallback to SageMaker execution role if running in SageMaker
             return get_execution_role()
-        except:
-            # If running outside SageMaker, use IAM role ARN
-            return os.environ.get('SAGEMAKER_ROLE')
+        except Exception as e:
+            # If both fail, raise an informative error
+            raise ValueError(
+                "Could not determine SageMaker execution role. "
+                "Please set SAGEMAKER_ROLE in your .env file or run within SageMaker. "
+                f"Error: {e}"
+            )
     
     def prepare_training_data(self, data_path: str = "../data") -> Dict[str, str]:
         """Prepare and upload training data to S3 with correct directory structure"""
@@ -890,7 +916,7 @@ def create_sagemaker_config_template():
     """Create configuration template for AWS credentials"""
     config_template = {
         "aws_region": "us-east-1",
-        "sagemaker_role": "arn:aws:iam::YOUR_ACCOUNT:role/SageMakerExecutionRole",
+        "sagemaker_role": "Set in .env file as SAGEMAKER_ROLE",
         "s3_bucket": "your-sagemaker-bucket",
         "model_settings": {
             "balance_predictor": {
@@ -924,8 +950,8 @@ if __name__ == "__main__":
     
     # Note: Actual training requires AWS credentials and simulation data
     print("\nTo use this integration:")
-    print("1. Configure AWS credentials")
-    print("2. Update sagemaker_config_template.json with your settings") 
+    print("1. Create .env file with SAGEMAKER_ROLE (see .env.example)")
+    print("2. Configure AWS credentials (aws configure or IAM role)")
     print("3. Run gameplay simulations to generate training data")
     print("4. Execute the ML training pipeline")
     print("\nExample workflow:")

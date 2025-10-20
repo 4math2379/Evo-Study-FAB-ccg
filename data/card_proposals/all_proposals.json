@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Quantum Resonator",
+    "card_type": "equipment",
+    "cost": 2,
+    "archetype": "Quantum",
+    "description": "An advanced quantum device that amplifies resonance patterns",
+    "abilities": [
+      "When played: Gain 1 Quantum Charge",
+      "Activated: Pay 2 Quantum Charges to draw a card"
+    ],
+    "features": {
+      "AI": 0,
+      "Nano": 0,
+      "Quantum": 1,
+      "Base": 0,
+      "0_cost": 0,
+      "1_cost": 0,
+      "2_cost": 1,
+      "3_cost": 0,
+      "4_plus_cost": 0,
+      "equipment": 1,
+      "item": 0,
+      "action": 0,
+      "avg_turns": 0.5,
+      "avg_evos": 0.2,
+      "avg_teklo_energy": 0.1,
+      "avg_nanite_counters": 0.0,
+      "avg_quantum_charges": 1.2,
+      "consistency_score": 0.3,
+      "avg_expert_balance_score": 0
+    },
+    "predicted_win_rate": 0.1962962962962963,
+    "predicted_balance_score": 5.296296296296297,
+    "balance_assessment": "\ud83d\udd35 UNDERPOWERED - Consider increasing power level",
+    "created_at": "2025-10-21T01:19:41.240964"
+  }
+]

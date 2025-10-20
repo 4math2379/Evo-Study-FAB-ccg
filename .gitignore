@@ -18,7 +18,7 @@ data/simulations/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/simulations/.gitkeep
-
+scripts/.env
 # ML Models
 models/balance/*.pkl
 models/balance/*.joblib
@@ -37,3 +37,4 @@ logs/
 .DS_Store
 Thumbs.db
 WARP.md
+.env
