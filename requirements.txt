@@ -39,3 +39,9 @@ tqdm>=4.64.0
 xgboost>=1.6.0
 lightgbm>=3.3.0
 optuna>=3.0.0
+
+# AI 
+openai
+
+# HuggingFace Hub (for model sharing)
+huggingface_hub>=0.19.0
