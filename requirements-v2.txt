@@ -1,0 +1,12 @@
+# v2 learning notebooks (notebooks/v2) and the teklo package
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.4
+matplotlib>=3.8
+joblib>=1.3
+jupyterlab>=4.0
+ipykernel>=6.0
+pytest>=7.0
+
+# notebooks 04 and 05: Hugging Face Inference Providers and the Hub
+huggingface_hub>=1.0
