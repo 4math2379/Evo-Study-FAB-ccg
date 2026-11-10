@@ -161,15 +161,13 @@ def run_quick_demo():
         
         print("\n📝 Next Steps:")
         print("1. Run full simulations: jupyter notebook notebooks/gameplay_simulator.ipynb")
-        print("2. Analyze results: python scripts/data_analytics.py")
-        print("3. Set up AWS for ML training (optional)")
-        print("4. Read HOW_TO_USE.md for detailed instructions")
+        print("2. Try the v2 learning notebooks: jupyter lab notebooks/v2")
         
         return True
         
     except ImportError as e:
         print(f"❌ Import Error: {e}")
-        print("💡 Try running: python scripts/setup_environment.py")
+        print("💡 Try running: pip install -r requirements.txt")
         return False
         
     except Exception as e:
