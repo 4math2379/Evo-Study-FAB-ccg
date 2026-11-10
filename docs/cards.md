@@ -14,7 +14,7 @@ Teklovossen is a Mechanologist hero from Flesh and Blood. The official card pool
 <p align="center">
   <img src="../evos/Nano%20Evos/evo_study.%202025,%2022_22_28.png" alt="Teklo Custom Fabrication" width="23%">
   <img src="../evos/Ai-Evo/evo_Evo-aiCoreNexus.png" alt="AI Evo concept art" width="23%">
-  <img src="../evos/Quantuum%20Evo/evo_study.%202025,%2023_23_19.png" alt="Quantum Nexus" width="23%">
+  <img src="../evos/Quantuum%20Evo/evo_study.%202025,%2023_23_19.png" alt="Evo Quantum Controller" width="23%">
   <img src="../evos/Biomancy%20evo/evo_study.%202025,%2000_29_18.png" alt="Biomancy Evo concept art" width="23%">
   <br><sub>Concept art from <code>evos/</code>: Nano, AI, Quantum and Biomancy Evos (AI-generated).</sub>
 </p>
