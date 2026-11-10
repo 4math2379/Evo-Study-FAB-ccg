@@ -21,7 +21,11 @@ def random_deck(pool: list[Card], rng: np.random.Generator, size: int = DECK_SIZ
     Each deck also draws its own preferences: how much it leans on each card kind, on the
     fan-made cards and on Generic cards. That spread is what lets a model learn later.
     """
-    by_kind = {k: [c for c in pool if c.kind == k] for k in KINDS}
+    unique = list({c.id: c for c in pool}.values())
+    if size < 1 or len(unique) * MAX_COPIES < size:
+        raise ValueError(f"cannot build {size} cards from {len(unique)} different cards "
+                         f"with at most {MAX_COPIES} copies each")
+    by_kind = {k: [c for c in unique if c.kind == k] for k in KINDS}
     kinds = [k for k in KINDS if by_kind[k]]
     kind_weights = rng.dirichlet([KIND_ALPHA[k] for k in kinds])
     custom_pref = rng.uniform(0.2, 6.0)  # > 1 means this deck favours fan-made cards
@@ -34,15 +38,21 @@ def random_deck(pool: list[Card], rng: np.random.Generator, size: int = DECK_SIZ
             return generic_pref
         return 1.0
 
+    # 10 to 15 different cards, but never more than the deck size or the pool allows,
+    # and never so few that 3 copies each can't fill the deck
     n_distinct = int(rng.integers(10, 16))
+    n_distinct = max(min(n_distinct, size, len(unique)), -(-size // MAX_COPIES))
     chosen: list[Card] = []
+    chosen_ids: set[str] = set()
     while len(chosen) < n_distinct:
-        kind = kinds[rng.choice(len(kinds), p=kind_weights)]
-        candidates = [c for c in by_kind[kind] if c not in chosen]
-        if not candidates:
-            continue
+        open_kinds = [i for i, k in enumerate(kinds) if any(c.id not in chosen_ids for c in by_kind[k])]
+        p = kind_weights[open_kinds] / kind_weights[open_kinds].sum()
+        kind = kinds[open_kinds[rng.choice(len(open_kinds), p=p)]]
+        candidates = [c for c in by_kind[kind] if c.id not in chosen_ids]
         w = np.array([card_weight(c) for c in candidates])
-        chosen.append(candidates[rng.choice(len(candidates), p=w / w.sum())])
+        card = candidates[rng.choice(len(candidates), p=w / w.sum())]
+        chosen.append(card)
+        chosen_ids.add(card.id)
 
     copies = Counter({c.id: 1 for c in chosen})
     while sum(copies.values()) < size:

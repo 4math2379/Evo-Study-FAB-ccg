@@ -36,7 +36,7 @@
 - ⚔️ **A readable game simulator**: a small Flesh and Blood-style duel where cost, pitch, power, defense, Go again, Boost, items and Evos all matter, about 0.7 ms per game.
 - 🎲 **800 random decks × 50 games**, played against one fixed opponent: real variety for a model to learn from.
 - 📓 **Learning notebooks** that build the prediction step by step: sanity checks, feature engineering, the leakage trap, baselines, cross-validation, learning curves and a held-out test set.
-- 📈 **An honest model**: cross-validated R² 0.67 and 0.69 on unseen decks, where v1 scored −1.33.
+- 📈 **An honest model**: cross-validated R² 0.67 and 0.68 on unseen decks, where v1 scored −1.33.
 - 🧪 **Examples** that predict any deck list's win rate and print a game turn by turn.
 - ✅ **Tests** for the simulator: fair mirror matches, reproducible games, decks without attacks lose.
 
@@ -73,12 +73,12 @@ The question: **given only a deck list, how often will this deck win against the
 |---|---|---|
 | Training rows | 9 deck presets (5 of them identical) | 800 random decks |
 | Cross-validated R² | −1.33 (worse than guessing the average) | **0.67** |
-| Held-out test R² | not measured | **0.69**, average miss 15 points |
+| Held-out test R² | not measured | **0.68**, average miss 15 points |
 | Best R² possible (luck of 50 games) | | 0.98 |
 
 <p align="center">
-  <img src="docs/images/model-comparison.png" alt="Cross-validated R² of four models: guessing the average -0.01, linear 0.60, random forest 0.64, gradient boosting 0.67" width="49%">
-  <img src="docs/images/learning-curve.png" alt="Learning curve: R² grows from -0.20 with 9 decks to 0.67 with 516" width="49%">
+  <img src="docs/images/model-comparison.png" alt="Cross-validated R² of four models: guessing the average -0.01, linear 0.61, random forest 0.65, gradient boosting 0.67" width="49%">
+  <img src="docs/images/learning-curve.png" alt="Learning curve: R² grows from -0.23 with 9 decks to 0.68 with 516" width="49%">
   <br><sub>Left: four models compared with cross-validation. Right: with 9 decks, as in v1, the model is worse than guessing.</sub>
 </p>
 
@@ -105,8 +105,8 @@ python examples/predict_deck.py examples/decks/nano_evo.txt --simulate 200
 ```
 
 ```text
-Predicted win rate against the reference opponent: 81%
-Simulated over 200 games: 93% (difference +12%)
+Predicted win rate against the reference opponent: 84%
+Simulated over 200 games: 93% (difference +9%)
 ```
 
 ## 📓 Learning notebooks
@@ -114,7 +114,7 @@ Simulated over 200 games: 93% (difference +12%)
 | # | Notebook | What you learn |
 |---|---|---|
 | 01 | [Simulate games](notebooks/v2/01_simulate.ipynb) | build data you can trust: the simulator, a game play by play, sanity checks, 800 random decks |
-| 02 | [Build the dataset](notebooks/v2/02_dataset.ipynb) | features from the deck list only, feature engineering (0.37 → 0.66), the leakage trap (a fake 0.97) |
+| 02 | [Build the dataset](notebooks/v2/02_dataset.ipynb) | features from the deck list only, feature engineering (0.39 → 0.66), the leakage trap (a fake 0.97) |
 | 03 | [Train and evaluate](notebooks/v2/03_train_evaluate.ipynb) | baselines, cross-validation, the best score possible, learning curves, the test set, what the model relies on, the value of each card |
 | 04 | LLMs with Hugging Face Inference Providers | *coming next*: an LLM reads the fan-made card texts the keyword parser can't |
 | 05 | Publish to the Hugging Face Hub | *coming next*: the dataset and a fixed model with a working Quick Start |

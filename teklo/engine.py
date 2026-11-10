@@ -75,10 +75,12 @@ class Player:
     def pitch_total(self, skip: int | None = None) -> int:
         return sum(c.pitch for i, c in enumerate(self.hand) if i != skip)
 
-    def pay(self, cost: int, floating: int) -> int:
+    def pay(self, cost: int, floating: int, reserve: Card | None = None) -> int:
         """Pay a cost: floating resources, then Teklo Energy, then pitch (blue cards first).
 
-        Returns the resources still floating afterwards. The caller checks affordability.
+        ``reserve`` is a card in hand that must not be pitched, because the player plans to
+        play it next. Returns the resources still floating afterwards. The caller checks
+        affordability.
         """
         if floating >= cost:
             return floating - cost
@@ -87,9 +89,14 @@ class Player:
         self.energy -= used
         cost -= used
         floating = 0
+        # keep one copy of the reserved card (the attack planned next) out of the pitch
+        keep = next((j for j, c in enumerate(self.hand) if c is reserve), None)
         while cost > 0:
             # pitch the card with the most resources; among equals, the weakest attacker
-            i = max(range(len(self.hand)), key=lambda j: (self.hand[j].pitch, -self.hand[j].power))
+            options = [j for j in range(len(self.hand)) if j != keep] or list(range(len(self.hand)))
+            i = max(options, key=lambda j: (self.hand[j].pitch, -self.hand[j].power))
+            if keep is not None and i < keep:
+                keep -= 1
             card = self.hand.pop(i)
             self.deck.append(card)  # pitched cards go to the bottom of the deck
             floating += card.pitch
@@ -159,7 +166,7 @@ class Duel:
         weapon_ready = True
 
         while action_points > 0 and foe.life > 0:
-            play = self._choose_play(me, floating, bonus, weapon_ready)
+            play, reserve = self._choose_play(me, floating, bonus, weapon_ready)
             if play is None:
                 break
             action_points -= 1
@@ -172,7 +179,7 @@ class Duel:
                 continue
 
             card = me.hand.pop(play)
-            floating = me.pay(card.cost, floating)
+            floating = me.pay(card.cost, floating, reserve)
             me.cards_played += 1
             go_again = card.effects.go_again or card.kind in ("item", "evo", "instant")
             fx = card.effects
@@ -234,10 +241,12 @@ class Duel:
         return 1 + upgrade + 2 * fx.magnitude()
 
     def _choose_play(self, me: Player, floating: int, bonus: int, weapon_ready: bool):
-        """Pick the hand index to play, "weapon", or None to end the turn.
+        """Pick what to play: (hand index or "weapon" or None, card to keep out of the pitch).
 
         Rule of thumb: play cards that keep the turn going (Go again, items, Evos, instants)
-        first, as long as an attack is still affordable afterwards; then make the best attack.
+        first, as long as the best attack is still affordable afterwards; then make the best
+        attack. Attacks with Go again count both ways: they keep the turn going, and they can
+        be the final attack.
         """
         budget = floating + me.energy
         keep_going, finishers = [], []
@@ -248,7 +257,10 @@ class Duel:
             if value <= 0:
                 continue
             go = card.effects.go_again or card.kind in ("item", "evo", "instant")
-            (keep_going if go else finishers).append((value, i))
+            if go:
+                keep_going.append((value, i))
+            if not go or card.kind == "attack":
+                finishers.append((value, i))
         if weapon_ready and WEAPON_COST <= budget + me.pitch_total():
             finishers.append((me.weapon_power + bonus - 0.5 * WEAPON_COST, "weapon"))
 
@@ -257,19 +269,21 @@ class Duel:
             if value < 1:
                 break
             if best_finisher is None:
-                return i
-            # still able to pay for the best finisher after playing this card?
+                return i, None
             fin = best_finisher[1]
+            if fin == i:  # this card is the best attack itself
+                return i, None
+            # still able to pay for the best finisher after playing this card?
             fin_cost = WEAPON_COST if fin == "weapon" else me.hand[fin].cost
             card = me.hand[i]
             left = budget + me.pitch_total(skip=i) - card.cost
             if fin != "weapon":
                 left -= me.hand[fin].pitch
             if left >= fin_cost:
-                return i
+                return i, (None if fin == "weapon" else me.hand[fin])
         if best_finisher and best_finisher[0] >= 2:
-            return best_finisher[1]
-        return None
+            return best_finisher[1], None
+        return None, None
 
     def _attack(self, me: Player, foe: Player, power: int) -> bool:
         blocked = self._defend(foe, power)
@@ -290,7 +304,11 @@ class Duel:
             if gear.defense <= 0:
                 break
             blocked += gear.defense
-            gear.defense = 0 if gear.blade_break else gear.defense - 1
+            if gear.blade_break:  # destroyed: no defense and no more effects
+                gear.defense = 0
+                gear.effects = Effects()
+            else:
+                gear.defense -= 1
         hand_blocks = 0
         while foe.hand and hand_blocks < MAX_HAND_BLOCKS:
             left = power - blocked

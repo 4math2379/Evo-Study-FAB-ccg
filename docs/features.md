@@ -28,7 +28,7 @@ A missing count is a real 0. In v1, missing counts were filled with the column a
 
 ## Why effects are split by timing
 
-The first feature set added each effect up over the whole deck. It scored a cross-validated R² of **0.37**. In this game an item that gives +1 power pays off every turn, while an action that gives +1 power pays off once. Splitting each total by timing, and counting the cards that do nothing (`n_dead`), raised the score to **0.66** with the same data and the same model. Notebook 02 shows the comparison.
+The first feature set added each effect up over the whole deck. It scored a cross-validated R² of **0.39**. In this game an item that gives +1 power pays off every turn, while an action that gives +1 power pays off once. Splitting each total by timing, and counting the cards that do nothing (`n_dead`), raised the score to **0.66** with the same data and the same model. Notebook 02 shows the comparison.
 
 ## The leakage rule
 

@@ -29,8 +29,8 @@ Current metrics:
 
 | Metric | Value |
 |---|---|
-| Cross-validated R² (train, 5 folds) | 0.67 ± 0.02 |
-| Test R² (154 unseen decks) | 0.69 |
+| Cross-validated R² (train, 5 folds) | 0.67 ± 0.03 |
+| Test R² (154 unseen decks) | 0.68 |
 | Test MAE | 0.15 (15 win-rate points) |
 | Best R² possible with 50 games per deck | 0.98 |
 
