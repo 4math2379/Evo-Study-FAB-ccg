@@ -25,7 +25,7 @@ text { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
 
 <!-- left: title -->
 <text class="title" x="64" y="150">Teklo <tspan class="accent">Study</tspan></text>
-<text class="tag" x="66" y="196">Fan-made Mechanologist cards, a game simulator</text>
+<text class="tag" x="66" y="196">Dream cards for Teklovossen, a game simulator</text>
 <text class="tag" x="66" y="226">and a win-rate model, built to learn machine learning.</text>
 <g transform="translate(66 262)">
   <rect width="86" height="32" rx="16" fill="#1f2937" stroke="#3776AB"/><text class="chip" x="17" y="21">Python</text>

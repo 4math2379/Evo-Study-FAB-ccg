@@ -2,7 +2,7 @@
 
 ## The fan-made Teklovossen cards
 
-Teklovossen is a Mechanologist hero from Flesh and Blood. This project designs extra cards for him, along four tech paths. The full card texts and design notes are in [`teklostudy.md`](../teklostudy.md); the concept art is in [`evos/`](../evos).
+Teklovossen is a Mechanologist hero from Flesh and Blood. The official card pool now makes him competitive on his own, so these are **dream cards**: fan-made designs along four tech paths, tried out in the simulator for fun and for learning, not to fix the hero. The full card texts and design notes are in [`teklostudy.md`](../teklostudy.md); the concept art is in [`evos/`](../evos).
 
 | Path | Focus | Key cards | Mechanics |
 |---|---|---|---|

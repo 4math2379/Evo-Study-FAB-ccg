@@ -12,8 +12,8 @@
 </p>
 
 <p align="center">
-  <b>Fan-made cards for Teklovossen, the Mechanologist hero of Flesh and Blood</b><br>
-  plus a small game simulator and a win-rate model, written as a step-by-step way to learn machine learning in Jupyter.
+  <b>Dream cards for Teklovossen, the Mechanologist hero of Flesh and Blood</b><br>
+  fan-made designs, a small game simulator to try them out, and a win-rate model written as a step-by-step way to learn machine learning in Jupyter.
 </p>
 
 <p align="center">
@@ -32,7 +32,7 @@
 
 ## ✨ Features
 
-- 🃏 **38 fan-made Teklovossen cards** along four tech paths (AI, Nano, Quantum, Bio), with design notes in [`teklostudy.md`](teklostudy.md) and AI-generated concept art in [`evos/`](evos).
+- 🃏 **38 dream cards for Teklovossen** along four tech paths (AI, Nano, Quantum, Bio), with design notes in [`teklostudy.md`](teklostudy.md) and AI-generated concept art in [`evos/`](evos).
 - ⚔️ **A readable game simulator**: a small Flesh and Blood-style duel where cost, pitch, power, defense, Go again, Boost, items and Evos all matter, about 0.7 ms per game.
 - 🎲 **800 random decks × 50 games**, played against one fixed opponent: real variety for a model to learn from.
 - 📓 **Learning notebooks** that build the prediction step by step: sanity checks, feature engineering, the leakage trap, baselines, cross-validation, learning curves and a held-out test set.
@@ -190,15 +190,19 @@ simulation/, scripts/, IaC/, teklostudyv1.ipynb, notebooks/gameplay_simulator.ip
 
 ## 💡 Why this project
 
-As a new Flesh and Blood player looking for a hero that fits my playstyle, I picked Teklovossen: I'm a programmer and I love science fiction, so a hero who bends technology to his will was a perfect match. After a few games I realised his card pool was limited and he wasn't really competitive.
+As a new Flesh and Blood player looking for a hero that fits my playstyle, I picked Teklovossen: I'm a programmer and I love science fiction, so a hero who bends technology to his will was a perfect match. Back then his card pool was small, and he struggled to compete.
 
 A friend of mine, known as "If I have a Blue I Win", told me one day: **"Why not create additional cards for Teklovossen, and see if he can be more competitive?"** So I did. Thank you, **Laurent**!
+
+Since then, the official card pool has grown and Teklovossen is competitive on his own. So the project changed purpose: these are now **dream cards**, the AI, Nano, Quantum and Bio designs I'd love to see one day, with a simulator to try them out. They are not fixes for a weak hero.
 
 The prediction side started as a way to understand how machine learning works, and v2 rebuilt it as a series you can learn from.
 
 ## 🤝 Contributing
 
-Card ideas, balance suggestions and pull requests are welcome. For a new card, add it to `custom_cards.csv` and `teklostudy.md`, check how the simulator reads it, and re-run the notebooks ([how](docs/cards.md#adding-or-changing-a-card)). Contact: support@fabtcgcompanion.com.
+Dream card ideas, balance suggestions and pull requests are welcome. For a new card, add it to `custom_cards.csv` and `teklostudy.md`, check how the simulator reads it, and re-run the notebooks ([how](docs/cards.md#adding-or-changing-a-card)).
+
+Questions, ideas or problems: please **[open an issue](https://github.com/4math2379/Evo-Study-FAB-ccg/issues)**. That's the way to get in touch.
 
 ## 📄 License
 
