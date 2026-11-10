@@ -1,234 +1,205 @@
-# Teklo Study - Mechanologist Evo Card Design Project
-
-## Project Overview
-
-This repository contains the development and design documentation for **Teklovossen**, a Mechanologist hero for the Flesh and Blood trading card game's Modular Ascension set. The project focuses on creating thematic Evo equipment, AI items, and supporting cards that showcase Teklo Energy manipulation, nanotechnology, and artificial intelligence integration.
-
-> **NOTES**
-**This is a fan-made project and is not affiliated with Legend Story Studios or the official Flesh and Blood game.**
-
-<div align="center">
-
-
-<img src="evos\Nano Evos\evo_study. 2025, 22_22_28.png" alt="Custom Fabrication" width="400"/>
-
-*Teklo Custom Fabrication - A key resource for Mechanologist strategies*
-
-</div>
-
-## Why ?
-As a fresh new player of **Flesh and Blood**, I was looking for a hero that can fit my playstyle. And as a lover of technology and futurism, Teklovossen was a perfect match.
-Maybe because I am a programmer, or because I love Sci-Fi movies, but I was really attracted by the idea of playing a hero that can manipulate technology and use it to his advantage.
-
-But after playing a few games with him, I realize that his card pool was really limited, and that he was not really *competitive*.
-
-A friend of mine, known as "If I have a Blue I Win" told me one day:
-**"Why not create additional cards for Teklovossen? and see if can be more competitive?"**
-
-I was thinking about it for a while, and finally I decided to do it.
-
-So Thank You **Laurent** !
-
-
-
-##  Project Goals
-
-- Design balanced and thematic Evo equipment sets for multiple tech paths
-- Create comprehensive card evaluation and balance testing systems
-- Develop lore-consistent mechanics that fit the Flesh and Blood game system
-- Generate visual concepts and art direction for card designs (Using AI tools)
-- Create an expansion of Teklovossen's playstyle options
-
-## 📁 File Structure
-
-```
-tekloStudy/
-├── .gitignore                    # Git ignore rules
-├── README.md                     # This file
-├── teklostudy.md                # Main card design documentation
-├── teklostudyv1.ipynb           # Interactive development notebook
-└── evos/                        # Visual concept art
-    ├── evo_*.png               # Generated card art concepts
-    ├── Biomancy evo/           # Biomancy theme artwork
-    └── Quantuum Evo/           # Quantum theme artwork
-```
-
-##  Hero Themes
-
-### **AI Integration Path**
-- **Focus**: Artificial intelligence synergies and tactical combat protocols
-- **Key Cards**: `IA — Singularity Cannon`, `AI — Predator Logic`
-- **Mechanics**: AI item synergies, attack enhancement, resource conversion
-
-### **Nano Technology Path** 
-- **Focus**: Microscopic self-replication and adaptive armor systems
-- **Key Cards**: `Evo — Nanite Core Reactor`, `Nanite Devastator`
-- **Mechanics**: Nanite counters, equipment transformation, adaptive defense
-- **Signature Action**: `Singularity Protocol: Nano Genesis`
-
-### **Biomancy Evolution Path**
-- **Focus**: Bio-mechanical symbiosis and organic technology integration  
-- **Key Cards**: `Evo Bio-Oaken Soul` series, `Symbiotic Strike`
-- **Mechanics**: Symbiote token generation, biological enhancement, adaptive scaling
-
-### **Quantum Manipulation Path**
-- **Focus**: Probabilistic control and multidimensional precision
-- **Key Cards**: `Evo Quantum Processor`, `Quantum Nexus`  
-- **Mechanics**: Quantum charge manipulation, probability effects, reality bending
-
-
-
-<div align="center">
-
-<img src="evos/Quantuum Evo/evo_study. 2025, 23_23_19.png" alt="Quantum Nexus" width="400"/> <img src="evos/Quantuum Evo/evo_study. 2025, 23_09_33.png" alt="Quantum processor" width="400"/>
-
-*Quantum Evo to put on base Evo Steel Soul Evos*
-
-</div>
-
-##  Development Tools
-
-### **Card Balance Evaluator**
-The project includes a comprehensive Python-based card evaluation system in `teklostudyv1.ipynb`:
-
-```python
-evaluator = CardEvaluator()
-evaluator.add_card(
-    name="Card Name",
-    card_type="Equipment/Item/Action", 
-    cost="X Teklo Energy",
-    power_level=7,    # 1-10 scale
-    complexity=5,     # 1-10 scale  
-    fun_factor=8,     # 1-10 scale
-    balance=6,        # 1-10 scale
-    theme_fit=9       # 1-10 scale
-)
-```
-
-### **Balance Guidelines**
-- **Equipment Cost**: 2-5 Teklo Energy for Evo pieces
-- **Item Activation**: 1-3 Teklo Energy per use
-- **Target Balance Score**: 7+/10 for competitive viability
-- **Power Level Range**: 6-8 for consistent meta positioning
-
-##  Visual Development
-
-The `evos` directory contains generated artwork concepts:
-
-- **Core Evo Sets**: Visual representations of equipment transformations
-- **Biomancy Theme**: Organic-tech fusion aesthetic with teal/bronze frames
-- **Quantum Theme**: Prismatic energy with reality-bending visual effects
-- **Corporate Theme**: Industrial precision with Teklo branding elements
-
-##  Current Card Status
-
-### **Balanced Cards** 
-- `Evo — NeuroWeave Visor` - Card draw utility (Balance: 8/10)
-- `Self-Assembly Protocol` - Nano fabricate variant (Balance: 7/10)
-
-### **Cards Needing Balance** ⚠️
-- `AI — Singularity Cannon` - Uncapped scaling (Balance: 4/10)
-- `AI — Predator Logic` - Free reaction too powerful (Balance: 5/10)  
-- `Evo — Nanite Core Reactor` - Missing cost definition (Balance: 5/10)
-
-##  Getting Started
-
-### **Prerequisites**
-- Python 3.8+ for running the evaluation notebook
-- Jupyter Notebook or Jupyter Lab
-- Required packages: `pandas`, `numpy`, `matplotlib`
-
-### **Setup**
-```bash
-git clone <repository-url>
-cd tekloStudy
-pip install pandas numpy matplotlib jupyter
-jupyter notebook teklostudyv1.ipynb
-```
-
-### **Usage**
-1. **Read the Documentation**: Start with `teklostudy.md` for complete card designs
-2. **Run Balance Analysis**: Use `teklostudyv1.ipynb` to evaluate card balance
-3. **Test New Designs**: Add your cards to the evaluator for balance scoring
-4. **Generate Visuals**: Check `evos` for artwork inspiration
-
-## Gameplay Integration
-<div align="center">
-
-### **Resource Tokens of the Modular Ascension Fan made expansion**
-<img src="evos/evo_study.%202025,%2022_24_33.png" alt="Teklo Memory" width="400"/> <img src="evos/evo_study.%202025,%2022_24_31.png" alt="Teklo Energy" width="400"/>
-
-*Teklo Memory & Teklo Energy - Core resources for Mechanologist gameplay*
-
-</div>
-
-
-### **Teklo Energy System**
-- Primary resource for Mechanologist actions
-- Generation: 1-2 per turn typical
-- Storage: Limited to encourage active play
-- Spending: Most abilities cost 1-2 energy
-
-### **Evo Transformation Mechanics**
-- **Base → Evo**: Meaningful upgrade with 3-5 Teklo Energy cost
-- **Multi-Evo Synergies**: Exponential power scaling
-- **Battleworn Durability**: Sustainable through multiple combats
-
-##  Balance Methodology
-
-### **Problem Identification**
-- **Too Cheap**: Effect too powerful for cost
-- **Unlimited Scaling**: No caps or restrictions  
-- **No Counterplay**: Opponent cannot respond effectively
-- **Power Creep**: Strictly better than existing options
-
-### **Fix Implementation**
-- **Cost Adjustment**: Increase Teklo Energy requirements
-- **Add Limitations**: "Once per turn" or scaling caps
-- **Timing Restrictions**: Reaction costs or conditional triggers
-- **Resource Pressure**: Decay mechanics or maintenance costs
-
-##  Development Workflow
-
-1. **Design Phase**: Create thematic mechanics in `teklostudy.md`
-2. **Analysis Phase**: Score cards using the balance evaluator
-3. **Iteration Phase**: Adjust costs and limitations based on scores
-4. **Testing Phase**: Theoretical gameplay analysis
-5. **Visual Phase**: Generate concept art for approved designs
-
-##  Contributing
-
-You are welcome to contribute ideas, card designs, or balance suggestions. Please follow the development workflow and ensure all new cards are documented and evaluated.
-
-When adding new cards or themes:
-
-1. **Document in Markdown**: Add complete card text to `teklostudy.md`
-2. **Evaluate Balance**: Score using the Python evaluator
-3. **Target Metrics**: Aim for Balance 7+, Power Level 6-8
-4. **Theme Consistency**: Ensure 9+ theme fit score
-5. **Update Documentation**: Include mechanical rationale
-
-##  Future Development
-
-### **Planned Features**
-- Interactive card database with search functionality
-- Automated balance recommendations ( But live testing are still needed )
-- Meta-game impact simulation
-- Comprehensive playtest framework
-
-
-### **Additional Themes**
-- **Corporate Succession**: Executive equipment line
-- **Underground Resistance**: Stealth and disruption mechanics  
-- **Military Defense**: Protection and tactical systems
-- **Research Division**: Experimental and discovery effects
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="Teklo Study: fan-made Teklovossen cards for the AI, Nano, Quantum and Bio paths, above a win-rate chart" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://www.python.org"><img alt="Python 3.11" src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white"></a>
+  <a href="https://jupyter.org"><img alt="Jupyter notebooks" src="https://img.shields.io/badge/Jupyter-notebooks-F37626?logo=jupyter&logoColor=white"></a>
+  <a href="https://scikit-learn.org"><img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-1.8-F7931E?logo=scikitlearn&logoColor=white"></a>
+  <a href="https://pandas.pydata.org"><img alt="pandas" src="https://img.shields.io/badge/pandas-2-150458?logo=pandas&logoColor=white"></a>
+  <a href="https://huggingface.co/4math/FAB_Prediction_Model"><img alt="Model on Hugging Face" src="https://img.shields.io/badge/Hugging%20Face-model-FFD21E?logo=huggingface&logoColor=black"></a>
+  <img alt="Fan-made, educational" src="https://img.shields.io/badge/fan--made-educational-2dd4bf">
+</p>
+
+<p align="center">
+  <b>Fan-made cards for Teklovossen, the Mechanologist hero of Flesh and Blood</b><br>
+  plus a small game simulator and a win-rate model, written as a step-by-step way to learn machine learning in Jupyter.
+</p>
+
+<p align="center">
+  <a href="#-quick-start">Quick start</a> ·
+  <a href="#-learning-notebooks">Notebooks</a> ·
+  <a href="docs/cards.md">Cards</a> ·
+  <a href="docs/simulator.md">Simulator</a> ·
+  <a href="docs/features.md">Features</a> ·
+  <a href="examples/README.md">Examples</a> ·
+  <a href="docs/v1.md">v1</a>
+</p>
+
+> **Fan-made project.** Not affiliated with Legend Story Studios or the official Flesh and Blood game.
 
 ---
 
-**Project Status**: Active Development  
-**Last Updated**: January 2025  
-**License**: Personal Project - Educational Use
+## ✨ Features
 
-For questions about specific cards or balance concerns, reference the detailed analysis in `teklostudyv1.ipynb` or the complete card documentation in `teklostudy.md`.
-Feel free to open issues or pull requests for contributions!
-Contact: support@fabtcgcompanion.com
+- 🃏 **38 fan-made Teklovossen cards** along four tech paths (AI, Nano, Quantum, Bio), with design notes in [`teklostudy.md`](teklostudy.md) and AI-generated concept art in [`evos/`](evos).
+- ⚔️ **A readable game simulator**: a small Flesh and Blood-style duel where cost, pitch, power, defense, Go again, Boost, items and Evos all matter, about 0.7 ms per game.
+- 🎲 **800 random decks × 50 games**, played against one fixed opponent: real variety for a model to learn from.
+- 📓 **Learning notebooks** that build the prediction step by step: sanity checks, feature engineering, the leakage trap, baselines, cross-validation, learning curves and a held-out test set.
+- 📈 **An honest model**: cross-validated R² 0.67 and 0.69 on unseen decks, where v1 scored −1.33.
+- 🧪 **Examples** that predict any deck list's win rate and print a game turn by turn.
+- ✅ **Tests** for the simulator: fair mirror matches, reproducible games, decks without attacks lose.
+
+## 🃏 The cards
+
+| Path | Focus | Key cards |
+|---|---|---|
+| 🟣 **AI** | AI items and combat protocols | `AI - Overclock Core`, `AI - Predator Logic`, `AI - Singularity Cannon` |
+| 🟢 **Nano** | self-replicating nanites, adaptive armor | `Evo - Nanite Core Reactor`, `Evo - Phage Arms`, `Nanite Devastator` |
+| 🔵 **Quantum** | probability control | `Evo - Quantum Processor`, `Evo - Quantum Nexus` |
+| 🌿 **Bio** | bio-mechanical symbiosis | `Evo Bio-Oaken Soul` set, `Evo Bio-Core Reactor`, `Symbiotic Strike` |
+
+<p align="center">
+  <img src="evos/Nano%20Evos/evo_study.%202025,%2022_22_28.png" alt="Teklo Custom Fabrication" width="24%">
+  <img src="evos/Quantuum%20Evo/evo_study.%202025,%2023_23_19.png" alt="Quantum Nexus" width="24%">
+  <img src="evos/Quantuum%20Evo/evo_study.%202025,%2023_09_33.png" alt="Quantum Processor" width="24%">
+  <img src="evos/Biomancy%20evo/evo_study.%202025,%2000_29_18.png" alt="Biomancy Evo" width="24%">
+  <br><sub>Concept art: Teklo Custom Fabrication, Quantum Nexus, Quantum Processor and a Biomancy Evo.</sub>
+</p>
+
+<p align="center">
+  <img src="evos/evo_study.%202025,%2022_24_33.png" alt="Teklo Memory token" width="20%">
+  <img src="evos/evo_study.%202025,%2022_24_31.png" alt="Teklo Energy token" width="20%">
+  <br><sub>Teklo Memory and Teklo Energy, the resource tokens of the fan-made expansion.</sub>
+</p>
+
+More on the cards, how they are read and how to add one: **[docs/cards.md](docs/cards.md)**.
+
+## 📈 Results
+
+The question: **given only a deck list, how often will this deck win against the reference opponent?**
+
+| | v1 | v2 |
+|---|---|---|
+| Training rows | 9 deck presets (5 of them identical) | 800 random decks |
+| Cross-validated R² | −1.33 (worse than guessing the average) | **0.67** |
+| Held-out test R² | not measured | **0.69**, average miss 15 points |
+| Best R² possible (luck of 50 games) | | 0.98 |
+
+<p align="center">
+  <img src="docs/images/model-comparison.png" alt="Cross-validated R² of four models: guessing the average -0.01, linear 0.60, random forest 0.64, gradient boosting 0.67" width="49%">
+  <img src="docs/images/learning-curve.png" alt="Learning curve: R² grows from -0.20 with 9 decks to 0.67 with 516" width="49%">
+  <br><sub>Left: four models compared with cross-validation. Right: with 9 decks, as in v1, the model is worse than guessing.</sub>
+</p>
+
+What went wrong in v1 and how v2 fixes it: **[docs/v1.md](docs/v1.md)**.
+
+## 🚀 Quick start
+
+**Requirements**: Python 3.11 and git.
+
+```bash
+git clone https://github.com/4math2379/Evo-Study-FAB-ccg.git
+cd Evo-Study-FAB-ccg
+python -m venv venv
+venv\Scripts\activate             # Windows. On macOS or Linux: source venv/bin/activate
+pip install -r requirements-v2.txt
+python -m pytest                  # 6 checks of the simulator
+jupyter lab notebooks/v2
+```
+
+Run the notebooks in order: each one saves what the next needs in `data/v2/` and `models/v2/` (about two minutes in total). Then try a deck:
+
+```bash
+python examples/predict_deck.py examples/decks/nano_evo.txt --simulate 200
+```
+
+```text
+Predicted win rate against the reference opponent: 81%
+Simulated over 200 games: 93% (difference +12%)
+```
+
+## 📓 Learning notebooks
+
+| # | Notebook | What you learn |
+|---|---|---|
+| 01 | [Simulate games](notebooks/v2/01_simulate.ipynb) | build data you can trust: the simulator, a game play by play, sanity checks, 800 random decks |
+| 02 | [Build the dataset](notebooks/v2/02_dataset.ipynb) | features from the deck list only, feature engineering (0.37 → 0.66), the leakage trap (a fake 0.97) |
+| 03 | [Train and evaluate](notebooks/v2/03_train_evaluate.ipynb) | baselines, cross-validation, the best score possible, learning curves, the test set, what the model relies on, the value of each card |
+| 04 | LLMs with Hugging Face Inference Providers | *coming next*: an LLM reads the fan-made card texts the keyword parser can't |
+| 05 | Publish to the Hugging Face Hub | *coming next*: the dataset and a fixed model with a working Quick Start |
+
+## 🧭 How it works
+
+```mermaid
+flowchart LR
+    C["Card files<br/>official + fan-made"] --> P["Keyword parser<br/>rules text → effects"]
+    P --> D["800 random decks"]
+    D --> S["Simulator<br/>50 games each vs<br/>the reference opponent"]
+    S --> R[("Win rates")]
+    D --> F["Deck features<br/>known before playing"]
+    F --> M["Model<br/>gradient boosting"]
+    R --> M
+    M --> Y["Predicted win rate<br/>for any deck list"]
+```
+
+1. [`teklo.load_cards`](teklo/cards.py) reads both card files and a small parser turns rules text into effects ([Cards](docs/cards.md)).
+2. [`teklo.random_deck`](teklo/decks.py) builds deck-like random decks: 10 to 15 different cards, 1 to 3 copies each, 30 cards.
+3. [`teklo.evaluate_deck`](teklo/engine.py) plays each deck against the reference opponent, alternating who goes first ([Simulator](docs/simulator.md)).
+4. [`teklo.deck_features`](teklo/features.py) describes each deck with 32 numbers known before any game is played ([Features](docs/features.md)).
+5. A scikit-learn model learns win rate from those features ([Data and model files](docs/data-format.md)).
+
+## 🧪 Examples
+
+| Script | What it does |
+|---|---|
+| [`examples/predict_deck.py`](examples/predict_deck.py) | predicts a deck list's win rate, and checks it by simulation with `--simulate N` |
+| [`examples/play_one_game.py`](examples/play_one_game.py) | prints one game against the reference opponent, turn by turn |
+
+Deck list format and the two example decks: **[examples/README.md](examples/README.md)**.
+
+## 🧱 Tech stack
+
+| | Technology | Role in this project |
+|---|---|---|
+| <img src="https://cdn.simpleicons.org/python/3776AB" width="22" alt=""> | [Python](https://www.python.org) 3.11 | the `teklo` package, examples and tests |
+| <img src="https://cdn.simpleicons.org/jupyter/F37626" width="22" alt=""> | [Jupyter](https://jupyter.org) | the learning notebooks |
+| <img src="https://cdn.simpleicons.org/scikitlearn/F7931E" width="22" alt=""> | [scikit-learn](https://scikit-learn.org) | models, cross-validation, learning curves, permutation importance |
+| <img src="https://cdn.simpleicons.org/pandas/150458" width="22" alt=""> | [pandas](https://pandas.pydata.org) | card files, datasets, results tables |
+| 📊 | [matplotlib](https://matplotlib.org) | charts, with a colorblind-checked palette (`teklo/plotting.py`) |
+| <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="22" alt=""> | [Hugging Face](https://huggingface.co) | the published model; Inference Providers and the Hub in notebooks 04 and 05 |
+| <img src="https://cdn.simpleicons.org/pytest/0A9EDC" width="22" alt=""> | [pytest](https://pytest.org) | simulator checks |
+
+## 🗂️ Repository layout
+
+```
+teklo/              v2 package: cards, engine, decks, features, plotting
+notebooks/v2/       learning notebooks 01 to 03
+examples/           predict_deck.py, play_one_game.py, example deck lists
+tests/              simulator checks (pytest)
+docs/               documentation, banner and chart images
+custom_cards.csv    the fan-made cards (tab-separated)
+notebooks/card.csv  the official card database (tab-separated)
+teklostudy.md       full card texts and design notes
+evos/               concept art
+data/v2/, models/v2/  generated by the notebooks (gitignored)
+
+simulation/, scripts/, IaC/, teklostudyv1.ipynb, notebooks/gameplay_simulator.ipynb
+                    v1 code, unchanged (see docs/v1.md)
+```
+
+## 🛠️ Commands
+
+| Command | What it does |
+|---|---|
+| `pip install -r requirements-v2.txt` | install what v2 needs |
+| `python -m pytest` | run the simulator checks |
+| `jupyter lab notebooks/v2` | open the learning notebooks |
+| `python examples/predict_deck.py <deck.txt> [--simulate N]` | predict a deck's win rate |
+| `python examples/play_one_game.py <deck.txt> [--seed N]` | print one game turn by turn |
+
+## 💡 Why this project
+
+As a new Flesh and Blood player looking for a hero that fits my playstyle, I picked Teklovossen: I'm a programmer and I love science fiction, so a hero who bends technology to his will was a perfect match. After a few games I realised his card pool was limited and he wasn't really competitive.
+
+A friend of mine, known as "If I have a Blue I Win", told me one day: **"Why not create additional cards for Teklovossen, and see if he can be more competitive?"** So I did. Thank you, **Laurent**!
+
+The prediction side started as a way to understand how machine learning works, and v2 rebuilt it as a series you can learn from.
+
+## 🤝 Contributing
+
+Card ideas, balance suggestions and pull requests are welcome. For a new card, add it to `custom_cards.csv` and `teklostudy.md`, check how the simulator reads it, and re-run the notebooks ([how](docs/cards.md#adding-or-changing-a-card)). Contact: support@fabtcgcompanion.com.
+
+## 📄 License
+
+Personal project, educational use. Flesh and Blood and Teklovossen belong to Legend Story Studios; this project is fan-made and not affiliated with them. The official card data in `notebooks/card.csv` is used for study only.

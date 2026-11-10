@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-labelledby="t d">
+<title id="t">Teklo Study</title>
+<desc id="d">Banner: a fan of four fan-made Teklovossen cards (AI, Nano, Quantum, Bio) above a win-rate chart, next to the project title and its tools: Python, Jupyter, scikit-learn, pandas, Hugging Face.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1117"/><stop offset="0.55" stop-color="#111827"/><stop offset="1" stop-color="#102a2a"/></linearGradient>
+<radialGradient id="glow" cx="0.76" cy="0.5" r="0.42"><stop offset="0" stop-color="#2dd4bf" stop-opacity="0.28"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+<linearGradient id="ai" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b1d8f"/></linearGradient>
+<linearGradient id="nano" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f5f58"/></linearGradient>
+<linearGradient id="quantum" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient>
+<linearGradient id="bio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#84cc16"/><stop offset="1" stop-color="#3f6212"/></linearGradient>
+<style>
+text { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+.title { font-size: 56px; font-weight: 700; fill: #f0f6fc; }
+.accent { fill: #2dd4bf; }
+.tag { font-size: 21px; fill: #9da7b3; }
+.chip { font-size: 14px; font-weight: 600; fill: #e6edf3; }
+.cardname { font-size: 15px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+.cardsub { font-size: 11px; fill: #e6edf3; text-anchor: middle; opacity: 0.85; }
+.axis { stroke: #30363d; stroke-width: 1; }
+.lbl { font-size: 12px; fill: #8b949e; }
+</style>
+</defs>
+<rect width="1280" height="400" rx="18" fill="url(#bg)"/>
+<rect width="1280" height="400" rx="18" fill="url(#glow)"/>
+
+<!-- left: title -->
+<text class="title" x="64" y="150">Teklo <tspan class="accent">Study</tspan></text>
+<text class="tag" x="66" y="196">Fan-made Mechanologist cards, a game simulator</text>
+<text class="tag" x="66" y="226">and a win-rate model, built to learn machine learning.</text>
+<g transform="translate(66 262)">
+  <rect width="86" height="32" rx="16" fill="#1f2937" stroke="#3776AB"/><text class="chip" x="17" y="21">Python</text>
+  <rect x="96" width="90" height="32" rx="16" fill="#1f2937" stroke="#F37626"/><text class="chip" x="113" y="21">Jupyter</text>
+  <rect x="196" width="124" height="32" rx="16" fill="#1f2937" stroke="#F7931E"/><text class="chip" x="213" y="21">scikit-learn</text>
+  <rect x="330" width="88" height="32" rx="16" fill="#1f2937" stroke="#7c8dff"/><text class="chip" x="347" y="21">pandas</text>
+  <rect x="428" width="136" height="32" rx="16" fill="#1f2937" stroke="#FFD21E"/><text class="chip" x="445" y="21">Hugging Face</text>
+</g>
+<text class="lbl" x="66" y="340">Fan-made, educational project. Not affiliated with Legend Story Studios.</text>
+
+<!-- right: a fan of four cards -->
+<g transform="translate(940 236)">
+  <g transform="translate(-150 -186) rotate(-12 62 88)">
+    <rect width="124" height="176" rx="12" fill="url(#ai)" stroke="#c4b5fd" stroke-width="1.5"/>
+    <circle cx="62" cy="66" r="26" fill="none" stroke="#ede9fe" stroke-width="2"/><circle cx="62" cy="66" r="9" fill="#ede9fe"/>
+    <text class="cardname" x="62" y="128">AI</text><text class="cardsub" x="62" y="146">Overclock</text>
+  </g>
+  <g transform="translate(-50 -200) rotate(-4 62 88)">
+    <rect width="124" height="176" rx="12" fill="url(#nano)" stroke="#99f6e4" stroke-width="1.5"/>
+    <g fill="#ccfbf1"><circle cx="46" cy="56" r="6"/><circle cx="78" cy="56" r="6"/><circle cx="62" cy="80" r="6"/><circle cx="40" cy="86" r="4"/><circle cx="84" cy="86" r="4"/></g>
+    <text class="cardname" x="62" y="128">Nano</text><text class="cardsub" x="62" y="146">Phage Arms</text>
+  </g>
+  <g transform="translate(50 -200) rotate(4 62 88)">
+    <rect width="124" height="176" rx="12" fill="url(#quantum)" stroke="#bfdbfe" stroke-width="1.5"/>
+    <ellipse cx="62" cy="68" rx="34" ry="12" fill="none" stroke="#dbeafe" stroke-width="2"/><ellipse cx="62" cy="68" rx="34" ry="12" fill="none" stroke="#dbeafe" stroke-width="2" transform="rotate(60 62 68)"/><ellipse cx="62" cy="68" rx="34" ry="12" fill="none" stroke="#dbeafe" stroke-width="2" transform="rotate(-60 62 68)"/>
+    <text class="cardname" x="62" y="128">Quantum</text><text class="cardsub" x="62" y="146">Nexus</text>
+  </g>
+  <g transform="translate(150 -186) rotate(12 62 88)">
+    <rect width="124" height="176" rx="12" fill="url(#bio)" stroke="#d9f99d" stroke-width="1.5"/>
+    <path d="M62 40 C 90 56, 90 86, 62 98 C 34 86, 34 56, 62 40 Z" fill="none" stroke="#ecfccb" stroke-width="2"/><path d="M62 46 L62 96" stroke="#ecfccb" stroke-width="2"/>
+    <text class="cardname" x="62" y="128">Bio</text><text class="cardsub" x="62" y="146">Bio-Core</text>
+  </g>
+</g>
+
+<!-- right: win-rate chart under the cards -->
+<g transform="translate(790 268)">
+  <line class="axis" x1="0" y1="96" x2="280" y2="96"/>
+  <g fill="#2a78d6">
+    <rect x="4" y="16" width="16" height="80" rx="3"/><rect x="24" y="76" width="16" height="20" rx="3"/><rect x="44" y="80" width="16" height="16" rx="3"/>
+    <rect x="64" y="82" width="16" height="14" rx="3"/><rect x="84" y="88" width="16" height="8" rx="3"/><rect x="104" y="82" width="16" height="14" rx="3"/>
+    <rect x="124" y="86" width="16" height="10" rx="3"/><rect x="144" y="88" width="16" height="8" rx="3"/><rect x="164" y="86" width="16" height="10" rx="3"/>
+    <rect x="184" y="90" width="16" height="6" rx="3"/><rect x="204" y="86" width="16" height="10" rx="3"/><rect x="224" y="85" width="16" height="11" rx="3"/>
+    <rect x="244" y="88" width="16" height="8" rx="3"/><rect x="264" y="74" width="16" height="22" rx="3"/>
+  </g>
+  <text class="lbl" x="0" y="116">0%</text><text class="lbl" x="250" y="116">100%</text>
+  <text class="lbl" x="84" y="116">win rate of 800 decks</text>
+</g>
+</svg>

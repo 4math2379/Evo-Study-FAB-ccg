@@ -1,6 +1,9 @@
 """
 Quick Demo of Teklovossen ML Pipeline
 Run this script to see the system in action immediately
+
+This is the v1 demo (simulation/ package). For v2, see examples/predict_deck.py
+and examples/play_one_game.py.
 """
 
 import sys

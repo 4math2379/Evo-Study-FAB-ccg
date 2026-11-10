@@ -39,3 +39,8 @@ Thumbs.db
 WARP.md
 .env
 venv/*
+
+# v2 notebooks: generated data and models (rebuilt by running notebooks/v2 in order)
+data/v2/
+models/v2/
+.pytest_cache/

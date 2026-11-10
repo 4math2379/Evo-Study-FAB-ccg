@@ -1,5 +1,7 @@
 # How to Use the Teklovossen ML Pipeline
 
+> **v1 guide.** This page describes the original (v1) pipeline. For the current learning notebooks, start with the [README](README.md) and the [docs](docs/README.md); [docs/v1.md](docs/v1.md) explains what changed.
+
 This guide walks you through using the simulation notebook and SageMaker features step by step.
 
 ## 🚀 Quick Start (5 minutes)
