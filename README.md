@@ -54,7 +54,7 @@
   <img src="evos/Quantuum%20Evo/evo_study.%202025,%2023_23_19.png" alt="Evo Quantum Controller" width="24%">
   <img src="evos/Quantuum%20Evo/evo_study.%202025,%2023_09_33.png" alt="Quantum Processor" width="24%">
   <img src="evos/Biomancy%20evo/evo_study.%202025,%2000_29_18.png" alt="Biomancy Evo" width="24%">
-  <br><sub>Concept art: Teklo Custom Fabrication, Evo Quantum Controller, Evo Quantum Processor and a Biomancy Evo.</sub>
+  <br><sub>Concept art generated with ChatGPT: Teklo Custom Fabrication, Evo Quantum Controller, Evo Quantum Processor and a Biomancy Evo.</sub>
 </p>
 
 <p align="center">
