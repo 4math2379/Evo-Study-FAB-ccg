@@ -2,7 +2,7 @@
 
 | Page | What it covers |
 |---|---|
-| [Cards](cards.md) | The fan-made Teklovossen cards and their four tech paths, how card files are read, the rules-text parser, and how to add a card |
+| [Cards](cards.md) | The fan-made Teklovossen cards and their four tech paths, how card files are read, the rules-text parser, how to add a card, and how cards are drawn as images |
 | [Simulator](simulator.md) | The rules of the simulated duel, how the simulated players decide, the sanity checks, and the known limits |
 | [Features](features.md) | Every model input, why effects are split by timing, and the leakage rule |
 | [Data and model files](data-format.md) | What notebooks 01 to 03 write to `data/v2/` and `models/v2/`, and how to load the model |
