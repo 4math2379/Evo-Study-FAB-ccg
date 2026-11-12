@@ -48,7 +48,7 @@ Card ids are `Name (pitch)`, for example `Zipper Hit (3)`, because most cards ex
 
 Anything else is ignored. An attack's own `+N{p}` is usually conditional, so it does not count.
 
-> **Important:** for most fan-made cards, `custom_cards.csv` stores only a type line (for example *Mechanologist Equipment - Chest - Evo Nano*), not the rules text. So the parser finds an effect on one fan-made card only, **AI - Overclock Core** (+2 power every turn). The others are judged on their stats: cost, pitch, power and defense. The real texts are in `teklostudy.md`; notebook 04 will hand them to an LLM.
+> **Important:** for most fan-made cards, `custom_cards.csv` stores only a type line (for example *Mechanologist Equipment - Chest - Evo Nano*), not the rules text. So the parser finds an effect on one fan-made card only, **AI - Overclock Core** (+2 power every turn). The others are judged on their stats: cost, pitch, power and defense. The real texts are in `teklostudy.md`; a later notebook will hand them to an LLM.
 
 ## What the model says about each fan-made card
 
@@ -65,6 +65,28 @@ Notebook 03 estimates how much one extra copy of each card changes a deck's win 
    - Put the rules text in `Functional Text`, using the patterns above if you want the simulator to understand it (for example `Your next attack gains +2{p}.`).
 2. Check how it was read: `teklo.cards_frame(teklo.load_cards(...))` shows the `fx_` columns.
 3. Re-run notebooks 01 to 03 to see how decks with it perform.
+4. To see it as a finished card, add it to the dream cards in notebook 04 with an art idea and a flavour line.
+
+## Drawing a card
+
+[`teklo/card_art.py`](../teklo/card_art.py) draws a card as a 1024 × 1536 image. Notebook 04 uses it for the dream cards.
+
+- **Frame.** AI, Nano, Quantum and Bio cards are drawn on a frame cut from one of the ChatGPT concept cards: the concept card's title, text, numbers and picture were wiped out and the blank frame saved in [`evos/frames/`](../evos/frames). The AI, Nano and Bio frames are transparent where the picture goes, so the art shows only inside their shaped windows. Mechanologist and Generic cards, which have no concept art, get a plain frame drawn in the theme colour.
+- **Text.** The name, cost, power, defense, type line, keywords, rules text and flavour are written with Pillow, so they are always spelled right; the rules text shrinks to fit its box. The gem takes the pitch colour: red 1, yellow 2, blue 3.
+- **Art.** `generate_art` asks FLUX.1-schnell, through Hugging Face Inference Providers, for the picture only. The prompt is the card's art idea plus the theme's style from `THEME_STYLE`, which changes the picture, never the frame. The picture and a JSON note (model, prompt, seed) are saved in `evos/generated/` and reused; pass `overwrite=True` or another seed to draw a new one.
+
+| Theme | Frame | Cut from |
+|---|---|---|
+| AI | `evos/frames/ai.png` | `evos/Ai-Evo/evo_study. 2025, 03_11_56.png` (IA — Genesis Mind) |
+| Nano | `evos/frames/nano.png` | `evos/Nano Evos/evo_study. 2025, 21_10_06.png` (Water Pulse Grenade) |
+| Quantum | `evos/frames/quantum.png` | `evos/Quantuum Evo/evo_study. 2025, 23_17_58.png` (Evo Quantum Controller) |
+| Bio | `evos/frames/bio.png` | `evos/Biomancy evo/evo_study. 2025, 01_03_46.png` (Evo Bio-Root Tower) |
+
+### Changing the template
+
+- Where things sit on a frame (art window, name banner, rules box, type banner, circles and gem, in pixels) is that frame's entry in `FRAMES` at the top of `card_art.py`. Move things there, not in the image.
+- To give another theme a painted frame: wipe the text and picture from a concept card, make its art window transparent (or leave it opaque for a plain rectangle), save it in `evos/frames/`, then add a `FRAMES` entry with its measured positions.
+- In a notebook, restart the kernel after editing `card_art.py`: Python keeps the module it imported first, so rerunning cells still draws with the old code.
 
 ## Design guidelines (from v1)
 

@@ -33,6 +33,7 @@
 ## ✨ Features
 
 - 🃏 **38 dream cards for Teklovossen** along four tech paths (AI, Nano, Quantum, Bio), with design notes in [`teklostudy.md`](teklostudy.md) and AI-generated concept art in [`evos/`](evos).
+- 🎨 **Dream cards drawn as finished cards**: frames cut from the concept art, text written by code so it is always spelled right, art from an open model through Hugging Face (notebook 04).
 - ⚔️ **A readable game simulator**: a small Flesh and Blood-style duel where cost, pitch, power, defense, Go again, Boost, items and Evos all matter, about 0.7 ms per game.
 - 🎲 **800 random decks × 50 games**, played against one fixed opponent: real variety for a model to learn from.
 - 📓 **Learning notebooks** that build the prediction step by step: sanity checks, feature engineering, the leakage trap, baselines, cross-validation, learning curves and a held-out test set.
@@ -63,7 +64,17 @@
   <br><sub>Teklo Memory and Teklo Energy, the resource tokens of the fan-made expansion.</sub>
 </p>
 
-More on the cards, how they are read and how to add one: **[docs/cards.md](docs/cards.md)**.
+<p align="center">
+  <img src="evos/generated/quantum_pulse_1.png" alt="Quantum Pulse" width="16%">
+  <img src="evos/generated/evo_quantum_lens_3.png" alt="Evo Quantum Lens" width="16%">
+  <img src="evos/generated/ai_overclock_core_2.png" alt="AI Overclock Core" width="16%">
+  <img src="evos/generated/nano_mender_swarm_3.png" alt="Nano Mender Swarm" width="16%">
+  <img src="evos/generated/bio_graft_surge_2.png" alt="Bio Graft Surge" width="16%">
+  <img src="evos/generated/nano_tech_protocol_hive_1.png" alt="Nano Tech Protocol Hive" width="16%">
+  <br><sub>Dream cards drawn by notebook 04: frames cut from the concept art above, art by FLUX.1-schnell via Hugging Face (AI-generated).</sub>
+</p>
+
+More on the cards, how they are read, how they are drawn and how to add one: **[docs/cards.md](docs/cards.md)**.
 
 ## 📈 Results
 
@@ -98,7 +109,7 @@ python -m pytest                  # 6 checks of the simulator
 jupyter lab notebooks/v2
 ```
 
-Run the notebooks in order: each one saves what the next needs in `data/v2/` and `models/v2/` (about two minutes in total). Then try a deck:
+Run the notebooks in order: each one saves what the next needs in `data/v2/` and `models/v2/` (about two minutes in total). Notebook 04 also reads a Hugging Face token from `.env` (`HF_TOKEN=...`) to draw card art; pictures already saved in `evos/generated/` are reused, not paid for again. Then try a deck:
 
 ```bash
 python examples/predict_deck.py examples/decks/nano_evo.txt --simulate 200
@@ -116,8 +127,10 @@ Simulated over 200 games: 93% (difference +9%)
 | 01 | [Simulate games](notebooks/v2/01_simulate.ipynb) | build data you can trust: the simulator, a game play by play, sanity checks, 800 random decks |
 | 02 | [Build the dataset](notebooks/v2/02_dataset.ipynb) | features from the deck list only, feature engineering (0.39 → 0.66), the leakage trap (a fake 0.97) |
 | 03 | [Train and evaluate](notebooks/v2/03_train_evaluate.ipynb) | baselines, cross-validation, the best score possible, learning curves, the test set, what the model relies on, the value of each card |
-| 04 | LLMs with Hugging Face Inference Providers | *coming next*: an LLM reads the fan-made card texts the keyword parser can't |
-| 05 | Publish to the Hugging Face Hub | *coming next*: the dataset and a fixed model with a working Quick Start |
+| 04 | [Design dream cards](notebooks/v2/04_balance_cards.ipynb) | write a card, check the simulator reads its rules text the way you meant it, then draw it: a frame cut from the concept art, art from FLUX.1-schnell through Hugging Face Inference Providers |
+| 05 | Is each card balanced? | *coming next*: the same random decks with and without a dream card, and how much it moves the win rate |
+| 06 | LLMs with Hugging Face Inference Providers | *later*: an LLM reads the fan-made card texts the keyword parser can't |
+| 07 | Publish to the Hugging Face Hub | *later*: the dataset and a fixed model with a working Quick Start |
 
 ## 🧭 How it works
 
@@ -157,21 +170,22 @@ Deck list format and the two example decks: **[examples/README.md](examples/READ
 | <img src="https://cdn.simpleicons.org/scikitlearn/F7931E" width="22" alt=""> | [scikit-learn](https://scikit-learn.org) | models, cross-validation, learning curves, permutation importance |
 | <img src="https://cdn.simpleicons.org/pandas/150458" width="22" alt=""> | [pandas](https://pandas.pydata.org) | card files, datasets, results tables |
 | 📊 | [matplotlib](https://matplotlib.org) | charts, with a colorblind-checked palette (`teklo/plotting.py`) |
-| <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="22" alt=""> | [Hugging Face](https://huggingface.co) | the published model; Inference Providers and the Hub in notebooks 04 and 05 |
+| <img src="https://cdn.simpleicons.org/huggingface/FFD21E" width="22" alt=""> | [Hugging Face](https://huggingface.co) | the published model; Inference Providers draw the card art in notebook 04 |
+| 🖼️ | [Pillow](https://python-pillow.org) | draws the dream cards: frame, text and art (`teklo/card_art.py`) |
 | <img src="https://cdn.simpleicons.org/pytest/0A9EDC" width="22" alt=""> | [pytest](https://pytest.org) | simulator checks |
 
 ## 🗂️ Repository layout
 
 ```
-teklo/              v2 package: cards, engine, decks, features, plotting
-notebooks/v2/       learning notebooks 01 to 03
+teklo/              v2 package: cards, engine, decks, features, plotting, card art
+notebooks/v2/       learning notebooks 01 to 04
 examples/           predict_deck.py, play_one_game.py, example deck lists
 tests/              simulator checks (pytest)
 docs/               documentation, banner and chart images
 custom_cards.csv    the fan-made cards (tab-separated)
 notebooks/card.csv  the official card database (tab-separated)
 teklostudy.md       full card texts and design notes
-evos/               concept art
+evos/               concept art; frames/ cut from it, generated/ dream cards from notebook 04
 data/v2/, models/v2/  generated by the notebooks (gitignored)
 
 simulation/, teklostudyv1.ipynb, notebooks/gameplay_simulator.ipynb, quick_demo.py
