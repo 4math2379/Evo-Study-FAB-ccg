@@ -8,5 +8,7 @@ jupyterlab>=4.0
 ipykernel>=6.0
 pytest>=7.0
 
-# notebooks 04 and 05: Hugging Face Inference Providers and the Hub
+# notebook 04: drawing the dream cards, art from Hugging Face Inference Providers
 huggingface_hub>=1.0
+pillow>=10.1
+python-dotenv>=1.0
