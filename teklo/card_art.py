@@ -41,7 +41,8 @@ PITCH_COLORS = {1: "#d0402f", 2: "#e7b52c", 3: "#2a78d6"}
 # Painted frames. Each entry names the blank frame in evos/frames/ and where things sit on it,
 # in pixels: (left, top, right, bottom) boxes and (x, y) circle centres.
 #   art        box the picture is fitted to; a transparent frame shows it only through its window
-#   gem        pitch gem (x, y, radius), recoloured to the card's pitch unless it already has it
+#   gem        pitch gem (x, y, radius), recoloured to the card's pitch unless it already has it,
+#              with one pip per pitch point
 #   gem_pitch  the pitch the gem's own colour stands for (None: always recolour)
 #   cost_on_gem  the cost is written on the gem instead of in a circle
 #   header     a ribbon for the theme name; otherwise the theme goes under the frame at label_y
@@ -253,12 +254,54 @@ def _tint_gem(img: Image.Image, gem: tuple[int, int, int], pitch: int, gem_pitch
     img.paste(tinted, (x - r, y - r), mask.filter(ImageFilter.GaussianBlur(2)))
 
 
+def _pips(img: Image.Image, centre: tuple[int, int], radius: int, pitch: int, row: bool = False) -> None:
+    """Show the pitch as pips, like the pitch coin on a real card.
+
+    One pip in the middle, two side by side, three in a triangle, on the gem darkened like the
+    real cards' coin. With ``row`` they sit side by side and smaller, under the cost. Each pip is
+    the pitch colour in a silver rim, drawn four times larger and scaled down for smooth edges.
+    """
+    if pitch not in PITCH_COLORS:
+        return
+    if row:
+        pip = radius * 0.17
+        spots = [((i - (pitch - 1) / 2) * pip * 2.4, 0.0) for i in range(pitch)]
+    else:
+        pip = radius * {1: 0.5, 2: 0.4, 3: 0.37}[pitch]
+        spots = {1: [(0.0, 0.0)],
+                 2: [(-0.45 * radius, 0.0), (0.45 * radius, 0.0)],
+                 3: [(0.0, -0.42 * radius), (-0.45 * radius, 0.33 * radius), (0.45 * radius, 0.33 * radius)]}[pitch]
+        x0, y0 = centre
+        disc = Image.new("L", img.size, 0)
+        ImageDraw.Draw(disc).ellipse((x0 - radius + 3, y0 - radius + 3, x0 + radius - 3, y0 + radius - 3), fill=110)
+        img.paste(Image.new("RGB", img.size, "#0d1626"), (0, 0), disc.filter(ImageFilter.GaussianBlur(3)))
+    scale = 4
+    half = int(radius + pip) + 4
+    layer = Image.new("RGBA", (2 * half * scale, 2 * half * scale), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for dx, dy in spots:
+        x, y = (half + dx) * scale, (half + dy) * scale
+        for size, fill in ((1.14, INK), (1.0, "#dfe6ea"), (0.78, PITCH_COLORS[pitch])):
+            r = pip * size * scale
+            d.ellipse((x - r, y - r, x + r, y + r), fill=fill)
+        r = pip * 0.28 * scale  # a small highlight, top left
+        hx, hy = x - pip * 0.32 * scale, y - pip * 0.32 * scale
+        d.ellipse((hx - r, hy - r, hx + r, hy + r), fill=(255, 255, 255, 120))
+    layer = layer.resize((2 * half, 2 * half), Image.LANCZOS)
+    img.paste(layer, (centre[0] - half, centre[1] - half), layer)
+
+
 def _render_on_frame(card: Card, art: Image.Image | None, frame: dict, flavour: str,
                      credit: str) -> Image.Image:
     """Draw ``card`` on a painted frame from ``FRAMES``."""
     frame_img = Image.open(FRAME_DIR / frame["file"])
     img = frame_img.convert("RGB")
     _tint_gem(img, frame["gem"], card.pitch, frame["gem_pitch"])
+    gx, gy, gr = frame["gem"]
+    if frame.get("cost_on_gem"):  # the cost is written on the gem: the pips go in a row under it
+        _pips(img, (gx, gy + round(gr * 0.52)), gr, card.pitch, row=True)
+    else:
+        _pips(img, (gx, gy), gr, card.pitch)
 
     # Art window: the frame's transparent pixels, or the whole art box if the frame has none
     left, top, right, bottom = frame["art"]
@@ -283,8 +326,8 @@ def _render_on_frame(card: Card, art: Image.Image | None, frame: dict, flavour: 
         if value is None:
             continue
         x, y = frame[key]
-        if key == "cost" and frame.get("cost_on_gem"):  # light figure with a dark edge on the gem
-            d.text((x, y + 2), str(value), font=font("bold", 64), fill=CREAM, anchor="mm",
+        if key == "cost" and frame.get("cost_on_gem"):  # light figure with a dark edge, above the pips
+            d.text((x, y - round(gr * 0.12)), str(value), font=font("bold", 54), fill=CREAM, anchor="mm",
                    stroke_width=3, stroke_fill=INK)
         else:
             d.text((x, y + 2), str(value), font=font("regular", 68), fill=INK, anchor="mm")

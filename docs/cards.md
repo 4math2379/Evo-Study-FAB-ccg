@@ -72,7 +72,7 @@ Notebook 03 estimates how much one extra copy of each card changes a deck's win 
 [`teklo/card_art.py`](../teklo/card_art.py) draws a card as a 1024 × 1536 image. Notebook 04 uses it for the dream cards.
 
 - **Frame.** AI, Nano, Quantum and Bio cards are drawn on a frame cut from one of the ChatGPT concept cards: the concept card's title, text, numbers and picture were wiped out and the blank frame saved in [`evos/frames/`](../evos/frames). The AI, Nano and Bio frames are transparent where the picture goes, so the art shows only inside their shaped windows. Mechanologist and Generic cards, which have no concept art, get a plain frame drawn in the theme colour.
-- **Text.** The name, cost, power, defense, type line, keywords, rules text and flavour are written with Pillow, so they are always spelled right; the rules text shrinks to fit its box. The gem takes the pitch colour: red 1, yellow 2, blue 3.
+- **Text.** The name, cost, power, defense, type line, keywords, rules text and flavour are written with Pillow, so they are always spelled right; the rules text shrinks to fit its box. The top-right gem shows the pitch like a real card's pitch coin: its colour (red 1, yellow 2, blue 3) and one pip per pitch point, three in a triangle for pitch 3. On the AI and Nano frames the cost is written on that gem, with the pips in a row under it.
 - **Art.** `generate_art` asks FLUX.1-schnell, through Hugging Face Inference Providers, for the picture only. The prompt is the card's art idea plus the theme's style from `THEME_STYLE`, which changes the picture, never the frame. The picture and a JSON note (model, prompt, seed) are saved in `evos/generated/` and reused; pass `overwrite=True` or another seed to draw a new one.
 
 | Theme | Frame | Cut from |
