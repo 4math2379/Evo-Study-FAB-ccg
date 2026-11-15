@@ -65,7 +65,7 @@
 </p>
 
 <p align="center">
-  <img src="evos/generated/quantum_pulse_1.png" alt="Quantum Pulse" width="16%">
+  <img src="evos/generated/evo_bio_soul_memory_3.png" alt="Evo Bio Soul Memory" width="16%">
   <img src="evos/generated/evo_quantum_lens_3.png" alt="Evo Quantum Lens" width="16%">
   <img src="evos/generated/ai_overclock_core_2.png" alt="AI Overclock Core" width="16%">
   <img src="evos/generated/nano_mender_swarm_3.png" alt="Nano Mender Swarm" width="16%">
